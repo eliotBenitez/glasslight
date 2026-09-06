@@ -1,0 +1,9 @@
+{
+  "uuid": "tahoe-spotlight@codex",
+  "name": "Tahoe Spotlight",
+  "description": "A fast Liquid Glass Spotlight-style launcher for applications and files.",
+  "shell-version": ["50"],
+  "version": 18,
+  "settings-schema": "org.gnome.shell.extensions.tahoe-spotlight",
+  "gettext-domain": "tahoe-spotlight@codex"
+}

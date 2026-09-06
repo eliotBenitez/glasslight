@@ -1,0 +1,51 @@
+name: Сообщение об ошибке
+description: Сообщить о воспроизводимой проблеме Tahoe Spotlight
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Спасибо за сообщение. Не публикуйте содержимое буфера обмена и приватные локальные пути.
+  - type: input
+    id: shell-version
+    attributes:
+      label: Версия GNOME Shell
+      placeholder: "50.4"
+    validations:
+      required: true
+  - type: input
+    id: extension-version
+    attributes:
+      label: Версия Tahoe Spotlight
+      description: Значение `version` из metadata.json или номер релиза.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Шаги воспроизведения
+      placeholder: |
+        1. Открыть Spotlight сочетанием Alt+Space
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Ожидаемое поведение
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Фактическое поведение
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Журнал
+      description: Вставьте релевантные строки с префиксом `[Tahoe Spotlight]`, удалив приватные данные.
+      render: shell

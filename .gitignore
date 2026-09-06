@@ -1,0 +1,20 @@
+# Build artifacts
+/dist/
+*.zip
+
+# Test / profiling output
+coverage/
+gjs-*.syscap
+*.log
+
+# Editor / OS cruft
+*~
+*.swp
+*.swo
+.#*
+.DS_Store
+.idea/
+.vscode/
+
+# Local Claude/session files
+.claude/

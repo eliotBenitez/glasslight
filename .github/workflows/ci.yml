@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes gettext gjs libglib2.0-bin make python3 unzip zip
+
+      - name: Validate sources
+        run: make check
+
+      - name: Build extension archive
+        run: make package
+
+      - name: Verify required archive contents
+        run: |
+          archive=dist/Tahoe-Spotlight-GNOME-50.shell-extension.zip
+          unzip -Z1 "$archive" | grep -Fx extension.js
+          unzip -Z1 "$archive" | grep -Fx i18n.js
+          unzip -Z1 "$archive" | grep -Fx schemas/gschemas.compiled
+          unzip -Z1 "$archive" | grep -Fx locale/ru/LC_MESSAGES/tahoe-spotlight@codex.mo
