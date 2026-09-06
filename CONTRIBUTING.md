@@ -1,50 +1,50 @@
-# Участие в разработке Glasslight
+# Contributing to Glasslight
 
-Спасибо за желание помочь. Проект рассчитан на GNOME Shell 50 и использует GJS
-с ES-модулями без Node.js, пакетного менеджера и этапа транспиляции.
+Thanks for your interest in helping out. The project targets GNOME Shell 50 and
+uses GJS with ES modules — no Node.js, package manager, or transpilation step.
 
-## Подготовка окружения
+## Setting up
 
-Нужны `gjs`, `glib-compile-schemas`, GNU gettext, `zip`, `unzip`, `make` и
-Python 3. В Debian/Ubuntu их можно установить так:
+You'll need `gjs`, `glib-compile-schemas`, GNU gettext, `zip`, `unzip`, `make`,
+and Python 3. On Debian/Ubuntu:
 
 ```sh
 sudo apt install gjs libglib2.0-bin gettext zip unzip make python3
 ```
 
-Проверьте исходники и соберите установочный архив:
+Validate the sources and build the installable archive:
 
 ```sh
 make check
 make package
 ```
 
-Архив появится в `dist/Glasslight-GNOME-50.shell-extension.zip`.
+The archive appears at `dist/Glasslight-GNOME-50.shell-extension.zip`.
 
-## Правила изменений
+## Change guidelines
 
-- Сохраняйте UUID `glasslight` и существующий стиль JavaScript.
-- Новые пользовательские строки оборачивайте в `_()`, `ngettext()` или
-  `pgettext()` и обновляйте файлы `po/` и скомпилированный перевод.
-- Любой новый сигнал, таймер, cancellable или actor должен очищаться в
+- Preserve the `glasslight` UUID and the existing JavaScript style.
+- Wrap new user-facing strings in `_()`, `ngettext()`, or `pgettext()`, and
+  update the `po/` files and the compiled translation.
+- Any new signal, timer, cancellable, or actor must be cleaned up in
   `disable()`.
-- Не добавляйте удалённую загрузку изображений, хранение буфера на диске или
-  отправку поискового текста без отдельного обсуждения и документации.
-- Обновляйте README при изменении видимого поведения.
+- Don't add remote image downloads, on-disk clipboard storage, or sending
+  search text over the network without a separate discussion and documentation.
+- Update the README when visible behavior changes.
 
-## Ручная проверка
+## Manual testing
 
-После установки JavaScript-изменений выйдите из сеанса GNOME и войдите снова:
-Shell может повторно использовать кешированные ES-модули. Минимально проверьте
-открытие и закрытие, навигацию стрелками и Tab, Enter, Ctrl+0…Ctrl+4, изменённый
-режим с пустым/валидным/невалидным и нелатинским вводом, обе темы, узкий экран и
-отключённые анимации. После disable/enable не должно оставаться старых акторов,
-таймеров или обработчиков.
+After installing JavaScript changes, log out of GNOME and back in — the Shell
+may reuse cached ES modules. At a minimum, verify opening and closing, arrow and
+Tab navigation, Enter, `Ctrl+0`–`Ctrl+4`, the changed mode with empty, valid,
+invalid, and non-Latin input, both themes, a narrow screen, and disabled
+animations. After a disable/enable cycle, no stale actors, timers, or handlers
+should remain.
 
-Ошибки Shell доступны командой:
+Inspect Shell errors with:
 
 ```sh
 journalctl /usr/bin/gnome-shell -b -f
 ```
 
-Перед публикацией журнала удалите содержимое буфера обмена и приватные пути.
+Remove clipboard contents and private paths before sharing a log.
