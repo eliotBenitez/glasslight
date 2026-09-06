@@ -1,287 +1,203 @@
-# Glasslight · GNOME 50
+<div align="center">
 
-Расширение для CachyOS / GNOME Shell 50. Вызывается **Alt+Space**.
-Super+Space и настройки переключения языка не меняются.
+# Glasslight
 
-## Стекло и темы
+### A fast, keyboard-first launcher with native glass for GNOME Shell 50
 
-Настоящее GPU-размытие: живые копии фона и окон обрабатываются нативным
-Shell.BlurEffect, затем ограничиваются скруглённой маской. Текст и кнопки
-рисуются отдельным резким слоем. Нейтральный полупрозрачный материал поверх
-blur обеспечивает контраст; фиксированного голубого градиента нет.
-Нативный blur имеет отдельную финальную маску и не рисуется за пределами
-геометрии Glasslight; снаружи остаётся только компактная самостоятельная тень,
-которая не создаёт широкого мутного ореола на светлых обоях.
-После раскрытия или сворачивания нативный `Shell.BlurEffect` пересоздаётся под
-новую геометрию. Это полностью освобождает старые GPU framebuffer'ы, поэтому
-прямоугольник полной ширины не остаётся за компактной строкой даже на драйверах,
-где смена radius не сбрасывает старый paint volume.
+[![CI](https://github.com/eliotBenitez/glasslight/actions/workflows/ci.yml/badge.svg)](https://github.com/eliotBenitez/glasslight/actions/workflows/ci.yml)
+![GNOME Shell 50](https://img.shields.io/badge/GNOME%20Shell-50-4A86CF?logo=gnome&logoColor=white)
+![GJS](https://img.shields.io/badge/GJS-ES%20modules-F7DF1E?logo=javascript&logoColor=111)
 
-Светлая тема — молочно-белая, тёмная — графитовая. Выделение нейтральное,
-синий используется для каретки и клавиатурного фокуса. По умолчанию тема
-следует настройке GNOME color-scheme.
+**English** · [Русский](README.ru.md)
 
-Материал и движение связаны: при открытии blur материализуется вместе с tint,
-кромкой и тенью; при вводе основная поверхность расширяется под исчезающими
-кнопками, а результаты раскрываются вниз. Переключение режимов мягко обновляет
-содержимое, нажатие кратко сжимает и подсвечивает стеклянную кнопку, закрытие
-дематериализует поверхность в обратном порядке. Отключение системной настройки
-анимаций GNOME автоматически оставляет мгновенные переходы без масштабирования.
+Search apps and files, run useful actions, calculate expressions, and reuse your
+clipboard — without leaving the keyboard.
 
-Это приближение к Tahoe, **не порт закрытого Apple Liquid Glass**: фирменное
-оптическое преломление и SF Symbols не воспроизводятся полностью.
+![Glasslight application catalogue](assets/screenshots/glasslight-apps.png)
 
-Открыть настройки темы, силы размытия, истории и сочетания клавиш:
+</div>
 
-```sh
-gnome-extensions prefs glasslight
-```
+## Why Glasslight?
 
-## Четыре режима
+Glasslight turns `Alt+Space` into a compact command surface that expands only
+when you need results. It is built directly for GNOME Shell in modern GJS: no
+Electron, no browser runtime, no background server, and no cloud search while
+you type.
 
-| Кнопка | Действие | Клавиатура |
-|---|---|---|
-| Приложения | Каталог: сетка/список, категории, рекомендуемые и поиск | Ctrl+1 |
-| Файлы | Локальные файлы, без запроса — недавно изменённые; открытие | Ctrl+2 |
-| Действия | Настройки, снимок экрана, сетка приложений, домашняя папка, блокировка | Ctrl+3 |
-| Буфер обмена | Текст и миниатюры изображений; выбор повторно копирует оригинал | Ctrl+4 |
+- **Native glass** — live Shell background sampling with GPU-powered
+  `Shell.BlurEffect`, a rounded mask, adaptive tint, and crisp foreground text.
+- **Four focused modes** — applications, files, actions, and clipboard history,
+  available from the mouse or `Ctrl+1` through `Ctrl+4`.
+- **Useful without plugins** — calculator, timers, alarms, password and UUID
+  generation, text conversion, media controls, and system actions are built in.
+- **Local-first by design** — search and clipboard history stay on your device.
+  A web query is opened only after you explicitly activate the DuckDuckGo row.
+- **Made for the keyboard** — predictable arrows, Enter, Escape, Tab navigation,
+  category shortcuts, and Quick Keys.
 
-При наведении курсора на кнопку режима строка поиска показывает подсказку: лупа
-сменяется иконкой режима, плейсхолдер — названием кнопки, а справа появляется
-сочетание клавиш (как в оригинальном Spotlight).
+## See it in action
 
-### Встроенные Actions
+| Compact launcher | Built-in calculator |
+| --- | --- |
+| ![Glasslight compact launcher](assets/screenshots/glasslight-home.png) | ![Glasslight calculator](assets/screenshots/glasslight-calculator.png) |
 
-В режиме «Действия» доступны 20 локальных и системных команд. Действия с
-параметрами продолжаются внутри той же строки Glasslight: Enter подтверждает
-текущий параметр, Esc отменяет сценарий и возвращает к каталогу действий.
-Результаты генераторов остаются в панели до Enter; Enter копирует результат.
+The screenshots show the real extension running in GNOME Shell 50's Mutter
+Development Kit. The blue desktop is the isolated test session background.
 
-- случайное целое число с включёнными границами;
-- таймер от 1 секунды до 7 дней и будильник в формате `ЧЧ:ММ`;
-- монета, кубик от 2 до 1000 граней, пароль длиной 4–128 символов и UUID v4;
-- верхний, нижний и заглавный регистр для введённого или скопированного текста;
-- переключение «Не беспокоить» через настройку баннеров GNOME;
-- воспроизведение/пауза, следующий и предыдущий трек через стандарт MPRIS;
-- текущая дата и время с копированием результата;
-- очистка системного буфера и локальной истории расширения;
-- настройки, снимок экрана, каталог приложений, домашняя папка и блокировка.
+## What you can do
 
-Пароли получают случайные байты из системного `/dev/urandom`; внешние сервисы
-и сетевые запросы не используются. Таймеры и будильники существуют в памяти
-процесса Shell и отменяются при отключении расширения или завершении сеанса.
+### Find and launch applications
 
-Доступны Quick Keys:
+Browse every installed application in a responsive grid or list, filter by
+desktop categories, or search by name, description, keyword, and desktop ID.
+Favorites and GNOME's existing frequently used apps appear as suggestions;
+Glasslight does not collect its own usage statistics.
+
+### Find local files
+
+Glasslight indexes your home and standard user directories asynchronously, up
+to 20,000 files and six directory levels. Search is performed against names and
+paths. Hidden directories, symlinks, and common build directories are skipped.
+
+### Run actions
+
+Twenty local and system actions are included. Parameterized actions continue
+inside the same launcher, so you can start a timer, choose a password length,
+or transform text without opening another dialog.
 
 ```text
 rn 1 100      timer 10m      alarm 07:30
 coin          dice 20        pass 24        uuid
-case upper Текст             dnd
+case upper Text               dnd
 play          next           prev
 date          time           clipclear
 settings      shot           apps           home           lock
 ```
 
-Ctrl+0 возвращает общий поиск.
-При вводе текста или выборе режима четыре кнопки скрываются, а поверхность расширяется
-с 440 до 708 логических пикселей (с ограничением по ширине монитора).
-Кнопки возвращаются только в общем поиске с пустой строкой. Очистка строки
-в выбранном режиме сохраняет режим и расширенный вид; Ctrl+1…4 позволяют
-переключать режимы с клавиатуры, Ctrl+0 — вернуться в общий поиск.
-↑/↓ выбирают результат, Enter открывает, Esc или клик снаружи закрывает.
-Прокрутка колесом и тачпадом использует нативную плавность GNOME;
-тонкий плавающий индикатор без дорожки появляется только во время
-прокрутки и мягко исчезает после короткой паузы, как overlay-scrollbar macOS.
-В общем поиске есть строка DuckDuckGo: запрос отправляется **только после
-выбора этой строки**, не при наборе. Встроенных сетевых подсказок нет.
+### Calculate expressions
 
-### Калькулятор
+Type an expression in global search or Actions mode. Press Enter to copy its
+plain numeric result.
 
-Наберите арифметическое выражение (`2+2`, `3*(4+1)`, `10/4`, `2^10`) — в общем
-поиске и в режиме «Действия» первой строкой подсвечивается результат `= 4`,
-Enter копирует его в буфер. Поддерживаются `+ - * / % ^`, скобки, юникод-знаки
-`× ÷ −`, `**` как степень, десятичная запятая (`1,5+2,5`) и научная нотация
-(`1e3`). Есть тригонометрия в радианах — `sin`, `cos`, `tg` (`tan`), `ctg`
-(`cot`) — обратные `arcsin`/`asin`, `arccos`/`acos`, `arctan`/`atan`/`arctg`,
-`arccot`/`acot`/`arcctg` — функции `sqrt`, `ln` (натуральный), `log` (по
-основанию 10), `abs` и константы `pi` и `e`, например `sin(pi/6)`, `sqrt(2)`
-или `2*pi` (имена регистронезависимы). Степень у функции можно писать после
-аргумента или перед ним: `sin(x)^2` и `sin^2(x)` равнозначны и означают
-`(sin x)²`; поддерживаются юникод-надстрочные знаки (`sin²(x)`, `2³`). По
-математической традиции надстрочная `⁻¹` перед аргументом означает обратную
-функцию — `sin⁻¹(x)` (или `sin^-1(x)`) это арксинус, — тогда как та же степень
-после аргумента остаётся обратной величиной: `sin(x)⁻¹` = `1/sin(x)`.
-Вычисление локальное, без `eval` и без сети: строка распознаётся как
-калькулятор только если это действительно выражение, поэтому обычные запросы,
-версии (`1.2.3`) и `c++` результата не показывают. Копируется «сырое» число без
-разрядных разделителей, чтобы его можно было вставить в новое вычисление.
-
-Примеры:
-
-| Ввод | Результат |
-| --- | --- |
-| `3*(4+1)` | `15` |
-| `2^10` | `1 024` |
-| `1,5+2,5` | `4` |
-| `sqrt(2)` | `1,4142135624` |
-| `log(1000)` | `3` |
-| `ln(e)` | `1` |
-| `abs(3-7)` | `4` |
-| `sin(pi/6)` | `0,5` |
-| `sin(0.5)^2+cos(0.5)^2` | `1` |
-| `sin²(pi/6)` | `0,25` |
-| `sin⁻¹(0.5)` | `0,5235987756` (π/6) |
-| `tan⁻¹(1)` | `0,7853981634` (π/4) |
-| `sin(0.5)⁻¹` | `2,0858296429` (1/sin) |
-
-(Разделители в результате зависят от локали; выше — для русской.)
-
-### Каталог приложений
-
-Кнопка «Приложения» открывает отдельный каталог, а не обычную поисковую выдачу.
-По умолчанию — компактная семиколоночная сетка с иконками 54 px и
-однострочными названиями 12 px. Эти значения пропорционально перенесены с
-официального 642 px-эталона Apple на панель расширения шириной 708 px; на узком
-экране число колонок уменьшается. Меню `⋮` переключает «Сетка» /
-«Список». Выбор сохраняется между открытиями и перезапусками сеанса.
-Весь каталог доступен через прокрутку, ограничения в 40 приложений нет.
-
-Категории над сеткой: «Все», «Работа», «Интернет», «Медиа», «Графика»,
-«Игры», «Разработка», «Обучение», «Утилиты» и «Другие».
-Пустые категории скрываются. Классификация использует `Categories` из
-desktop-файлов: одно приложение может относиться к нескольким категориям,
-неизвестные категории попадают в «Другие». Это адаптация к Linux, не база Apple.
-Поиск по названию, описанию, ключевым словам и desktop ID работает внутри
-выбранной категории. Точное совпадение и начало названия имеют приоритет.
-Без запроса каталог сортируется по названию. Установка/удаление приложений
-обновляет каталог через системный монитор приложений.
-
-«Рекомендуемые» показываются только в «Все» без запроса: избранное GNOME,
-затем часто используемые приложения из существующей статистики Shell.
-Элементы не дублируются в секции «Все приложения». Если данных нет, секция
-скрывается. Расширение не ведёт собственную статистику, не включает сбор
-статистики GNOME и ничего не отправляет в сеть. Приложения iPhone не поддерживаются.
-
-- ↓ из поля поиска начинает навигацию; затем ↑/↓/←/→ перемещаются по сетке.
-- До начала навигации ←/→ в поле двигают каретку; изменение текста возвращает
-  режим редактирования. Enter запускает выбранное приложение.
-- Alt+← / Alt+→ и маленькие стрелки около категорий переключают категории.
-- Tab / Shift+Tab обходят элементы управления и выбранное приложение
-  (без необходимости проходить сотни иконок).
-- Кнопка «Назад» слева от поиска возвращает пустую строку и четыре режима.
-- Esc или клик снаружи закрывает панель. Alt+Space не изменён.
-
-Структура режима основана на [руководстве Apple по Apps в Spotlight](https://support.apple.com/en-gb/guide/mac-help/mh35840/mac).
-Точные пропорции, анимации и материал оригинала не заявляются как побитовая копия.
-
-Изображения PNG, JPEG, WebP и BMP показываются небольшой цветной миниатюрой
-с сохранением пропорций. Enter или клик копирует исходные байты изображения,
-не миниатюру. Поддержка WebP/BMP зависит от декодеров GdkPixbuf в системе.
-Также поддерживаются локальные изображения, скопированные в файловом менеджере:
-списки `x-special/gnome-copied-files` и `text/uri-list`, до 8 миниатюр за раз.
-Имена с пробелами и кириллицей поддерживаются. Для файлов Enter восстанавливает
-исходный список файлов, а не заменяет его пикселями; операция «вырезать» при
-восстановлении из истории превращается в безопасное «копировать».
-Исходные файлы должны оставаться доступными для последующей вставки.
-Удалённые URL не загружаются. Содержимое буфера на диск не записывается.
-
-История буфера включена по умолчанию и собирается также при закрытой панели.
-Закрытие и повторное открытие Glasslight её не очищают. Сохраняется до 20 записей
-в памяти: текст до 32 768 символов, изображение до 16 МиБ, общий бюджет данных
-истории — 32 МиБ (не включая служебную память и миниатюры).
-Большие или повреждённые изображения пропускаются с сообщением в панели.
-«Очистить» удаляет локальную историю,
-но не меняет системный буфер. До следующего копирования его текущее содержимое
-не добавляется обратно при открытии Glasslight. Повторное копирование того же
-текста или изображения считается новым копированием и снова добавляет запись.
-После отключения расширения история исчезает.
-Перезапуск сеанса тоже очищает историю. Если ранее история была отключена
-вручную, включите «История буфера обмена» в настройках расширения — явный выбор
-пользователя при обновлении не перезаписывается.
-Пароли в скопированном тексте автоматически не распознаются.
-
-## Требования
-
-- GNOME Shell 50;
-- `gnome-extensions` для установки и управления расширением;
-- для сборки из исходников: `gjs`, `glib-compile-schemas`, GNU gettext,
-  `make`, `zip`, `unzip` и Python 3.
-
-## Установка / обновление
-
-Скачайте готовый ZIP со страницы Releases или соберите его из исходников:
-
-```sh
-make check
-make package
+```text
+3*(4+1)                         → 15
+2^10                            → 1,024
+sqrt(2)                         → 1.4142135624
+sin(pi/6)                       → 0.5
+sin²(pi/6)                      → 0.25
+sin⁻¹(0.5)                      → 0.5235987756
 ```
 
-Команды установки работают и в **fish**, и в bash. Выполните их из корня
-репозитория:
+Supported syntax includes `+ - * / % ^`, parentheses, decimal comma, scientific
+notation, Unicode operators, superscript powers, `sqrt`, `ln`, `log`, `abs`,
+trigonometric and inverse trigonometric functions, `pi`, and `e`. Evaluation is
+local and uses a dedicated parser — never `eval`.
+
+### Reuse clipboard content
+
+Keep up to 20 text, image, and local-file entries in memory, with a total data
+budget of 32 MiB. Image previews support PNG, JPEG, WebP, and BMP when the
+matching GdkPixbuf decoder is available. Remote image URLs are never downloaded,
+and history disappears when the extension or Shell session ends.
+
+## Keyboard controls
+
+| Shortcut | Action |
+| --- | --- |
+| `Alt+Space` | Open or close Glasslight |
+| `Ctrl+0` | Return to global search |
+| `Ctrl+1` | Applications |
+| `Ctrl+2` | Files |
+| `Ctrl+3` | Actions |
+| `Ctrl+4` | Clipboard |
+| `↑` / `↓` | Select a result |
+| `←` / `→` | Navigate the application grid |
+| `Alt+←` / `Alt+→` | Change application category |
+| `Tab` / `Shift+Tab` | Move between controls |
+| `Enter` | Open, run, or copy the selected result |
+| `Esc` | Cancel the current action or close Glasslight |
+
+## Requirements
+
+- GNOME Shell **50**
+- `gnome-extensions` for installation and preferences
+- For source builds: `gjs`, `glib-compile-schemas`, GNU gettext, `make`, `zip`,
+  `unzip`, and Python 3
+
+Glasslight currently targets GNOME Shell 50 only. Compatibility metadata is kept
+intentionally strict until other Shell versions are tested.
+
+## Install from source
 
 ```sh
-gnome-extensions disable glasslight
+git clone https://github.com/eliotBenitez/glasslight.git
+cd glasslight
+make check
+make package
 gnome-extensions install --force dist/Glasslight-GNOME-50.shell-extension.zip
 ```
 
-При первой установке первая команда может сообщить, что расширение не найдено.
-Затем **выйдите из сеанса GNOME и войдите снова**. Для обновлённых
-JavaScript-модулей простого disable/enable недостаточно: Shell кеширует модули.
-После повторного входа:
+Log out of GNOME and sign in again, then enable the extension:
 
 ```sh
 gnome-extensions enable glasslight
 ```
 
-GNOME может занимать Alt+Space меню окна. Если есть конфликт, можно освободить
-сочетание (команда изменяет именно меню окна):
+GNOME Shell caches ES modules, so a disable/enable cycle is not sufficient after
+installing JavaScript updates. A fresh login is required for final validation.
+
+If GNOME's window menu already uses `Alt+Space`, release that shortcut with:
 
 ```sh
 gsettings set org.gnome.desktop.wm.keybindings activate-window-menu "[]"
 ```
 
-Вернуть меню окна:
+Restore the original window-menu shortcut with:
 
 ```sh
 gsettings set org.gnome.desktop.wm.keybindings activate-window-menu "['<Alt>space']"
 ```
 
-Отключить расширение:
+## Preferences
 
 ```sh
-gnome-extensions disable glasslight
+gnome-extensions prefs glasslight
 ```
 
-## Языки
+You can change the light/dark/system appearance, native blur radius, clipboard
+history, and activation shortcut. The grid/list catalogue layout is switched
+from the menu inside Applications mode. Settings are stored through GSettings.
 
-Интерфейс переведён через gettext и следует активной локали GNOME. Исходные
-строки — английские; в комплекте есть русский перевод
-(`locale/ru/LC_MESSAGES/glasslight.mo`). При локали `ru` расширение
-показывает русский, иначе — английский. Шаблон сообщений — `po/glasslight.pot`,
-переводы — `po/<язык>.po`. Чтобы добавить язык: создайте `po/<код>.po` из шаблона
-(`msginit`), переведите и скомпилируйте в `locale/<код>/LC_MESSAGES/glasslight.mo`
-командой `msgfmt`. Быстрые клавиши действий (`timer`, `rn`, `case` …) не зависят
-от языка, а поле «регистр текста» принимает и английские, и русские варианты.
+## Development
 
-## Поиск и ограничения
+```sh
+make check      # metadata, schema, translations, and core GJS tests
+make package    # regenerate compiled resources and build the installable ZIP
+make install    # build and install locally
+```
 
-Приложения ищутся сразу. Файлы индексируются асинхронно в памяти: домашняя
-папка и стандартные пользовательские каталоги, максимум 20 000 файлов,
-вложенность до 6 уровней. Скрытые каталоги, некоторые каталоги сборки и
-символические ссылки пропускаются. Поиск по имени и пути, не по содержимому
-документа. Индекс обновляется при включении расширения; изменения файлов
-не отслеживаются непрерывно. Первоначальная выдача может быть неполной.
-Пауза после ввода — 35 мс, не обещание фиксированной общей задержки на любом ПК.
+The GitHub Actions workflow runs the same checks and verifies that every release
+archive contains its required modules, compiled schema, and translation.
 
-Исходники расширения находятся в корне репозитория, настройки — в `schemas/`,
-а локализация — в `po/` и `locale/`. `make check` проверяет metadata, схему,
-перевод и чистую логику поиска/калькулятора. `make package` пересобирает схему и
-перевод, затем создаёт установочный ZIP с metadata в корне архива.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for architecture notes, localization
+commands, lifecycle rules, and the GNOME Shell manual-test checklist.
 
-Правила разработки и ручной проверки описаны в [CONTRIBUTING.md](CONTRIBUTING.md).
+## Privacy and limits
 
-## Источники визуального анализа
+- Clipboard history is memory-only and is never persisted by Glasslight.
+- Search text is not sent over the network while typing.
+- DuckDuckGo opens only when its result is activated.
+- Passwords use unbiased bytes read from `/dev/urandom`.
+- Timers and alarms exist only for the current Shell session.
+- File search uses an in-memory name/path index, not document contents.
 
-- [Apple: Meet Liquid Glass](https://developer.apple.com/videos/play/wwdc2025/219/) — рассеивание, прозрачность, адаптация к фону и темам.
-- [Apple: Spotlight](https://support.apple.com/en-nz/guide/mac-help/mchlp1008/26/mac/26) — поиск и режимы.
-- [GNOME: Shell.BlurEffect](https://gnome.pages.gitlab.gnome.org/gnome-shell/shell/class.BlurEffect.html) — нативное размытие; API дополнительно проверен на установленном Shell 50.4.
+## Design note
+
+Glasslight draws inspiration from contemporary translucent interfaces and
+Apple's public Liquid Glass and Spotlight documentation, but it is an independent
+GNOME extension. It does not ship Apple assets, SF Symbols, or proprietary
+optical-refraction technology.
+
+Native blur is implemented with GNOME Shell's own `Shell.BlurEffect` and a custom
+rounded GPU mask. See the [GNOME API documentation](https://gnome.pages.gitlab.gnome.org/gnome-shell/shell/class.BlurEffect.html)
+for the underlying effect.

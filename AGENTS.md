@@ -20,7 +20,7 @@ The extension UUID is `glasslight`. Preserve it in `metadata.json`, schema paths
 - `po/glasslight.pot` is the message template; `po/<lang>.po` are the translations, compiled to `locale/<lang>/LC_MESSAGES/glasslight.mo`.
 - `tests/core.test.js` covers the Shell-independent calculator, search, and application-catalogue helpers with GJS.
 - `Makefile` provides the validation, packaging, and local installation entry points; `.github/` contains CI and contribution templates.
-- `README.md` is the user-facing behavior, installation, privacy, and limitation reference. Update it when visible behavior changes.
+- `README.md` is the default English user-facing reference; `README.ru.md` is its Russian companion. Keep behavior, installation, privacy, limitations, and screenshot links synchronized when visible behavior changes.
 
 ## Localization
 
