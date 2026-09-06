@@ -7,7 +7,7 @@ import St from 'gi://St';
 
 // Applied outside the native blur, to the sampled background only. Text and
 // controls are separate siblings and never pass through either effect.
-const RoundedMask = GObject.registerClass(class TahoeRoundedMask extends Shell.GLSLEffect {
+const RoundedMask = GObject.registerClass(class GlasslightRoundedMask extends Shell.GLSLEffect {
     vfunc_build_pipeline() {
         this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT,
             'uniform vec2 size; uniform float corner;',
@@ -23,12 +23,12 @@ const RoundedMask = GObject.registerClass(class TahoeRoundedMask extends Shell.G
     }
 });
 
-export const GlassSurface = GObject.registerClass(class TahoeGlassSurface extends St.Widget {
+export const GlassSurface = GObject.registerClass(class GlasslightSurface extends St.Widget {
     _init(content, radius = 28) {
         // Do not clip the whole surface: doing so cuts the rounded box-shadow
         // against the actor's rectangular allocation and leaves visible square
         // tiles around every glass chip. Only the content viewport is clipped.
-        super._init({layout_manager: new Clutter.BinLayout(), style_class: 'tahoe-glass'});
+        super._init({layout_manager: new Clutter.BinLayout(), style_class: 'glasslight-glass'});
         this._content = content;
         content.x_expand = true;
         content.y_expand = true;
@@ -37,7 +37,7 @@ export const GlassSurface = GObject.registerClass(class TahoeGlassSurface extend
         this._radius = radius;
         // BlurEffect expands its offscreen paint volume beyond the actor.  A
         // clip on that same actor is applied too early in the paint chain and
-        // can therefore leave a blurred halo outside the Spotlight window.
+        // can therefore leave a blurred halo outside the launcher window.
         // Keep a separate, effect-free parent as the final hard boundary.
         this._blurClip = new St.Widget({layout_manager: new Clutter.BinLayout(),
             clip_to_allocation: true, x_expand: true, y_expand: true});
@@ -59,17 +59,17 @@ export const GlassSurface = GObject.registerClass(class TahoeGlassSurface extend
         this._blurRadius = 48;
         this._blur = this._createBlurEffect();
         this._blurRefreshes = 0;
-        this._sample.add_effect_with_name('tahoe-native-blur', this._blur);
+        this._sample.add_effect_with_name('glasslight-native-blur', this._blur);
         this._maskBox.add_child(this._sample);
         this._mask = new RoundedMask();
-        this._maskBox.add_effect_with_name('tahoe-rounded-mask', this._mask);
+        this._maskBox.add_effect_with_name('glasslight-rounded-mask', this._mask);
         this._blurClip.add_child(this._maskBox);
         this.add_child(this._blurClip);
-        this._tint = new St.Widget({style_class: 'tahoe-glass-tint', x_expand: true, y_expand: true});
+        this._tint = new St.Widget({style_class: 'glasslight-glass-tint', x_expand: true, y_expand: true});
         this.add_child(this._tint);
         // A separate optical layer lets interaction energize the material
         // without tinting or blurring the text and icons above it.
-        this._highlight = new St.Widget({style_class: 'tahoe-glass-highlight',
+        this._highlight = new St.Widget({style_class: 'glasslight-glass-highlight',
             x_expand: true, y_expand: true, opacity: 64});
         this.add_child(this._highlight);
         this._contentBox = new St.Widget({layout_manager: new Clutter.BinLayout(),
@@ -163,7 +163,7 @@ export const GlassSurface = GObject.registerClass(class TahoeGlassSurface extend
         // that the next paint allocates them from the current compact bounds.
         this._sample.remove_effect(this._blur);
         this._blur = this._createBlurEffect();
-        this._sample.add_effect_with_name('tahoe-native-blur', this._blur);
+        this._sample.add_effect_with_name('glasslight-native-blur', this._blur);
         this._blurRefreshes++;
         this._sample.queue_redraw();
     }

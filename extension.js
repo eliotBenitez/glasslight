@@ -22,11 +22,11 @@ import {label, icon} from './widgets.js';
 import {buildActions, quickAction} from './actions.js';
 import {_, ngettext, format} from './i18n.js';
 
-export default class TahoeSpotlight extends Extension {
+export default class GlasslightExtension extends Extension {
     enable() {
         this._alive = true;
         this._generation = (this._generation ?? 0) + 1;
-        this._settings = this.getSettings('org.gnome.shell.extensions.tahoe-spotlight');
+        this._settings = this.getSettings('org.gnome.shell.extensions.glasslight');
         this._interface = new Gio.Settings({schema_id: 'org.gnome.desktop.interface'});
         this._signals = [];
         this._surfaces = [];
@@ -99,7 +99,7 @@ export default class TahoeSpotlight extends Extension {
         this._applyTheme();
         if (this._settings.get_boolean('remember-clipboard')) this._readClipboard();
         this._startIndex();
-        Main.wm.addKeybinding('toggle-spotlight', this._settings, Meta.KeyBindingFlags.NONE,
+        Main.wm.addKeybinding('toggle-glasslight', this._settings, Meta.KeyBindingFlags.NONE,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP,
             () => this._overlay.visible && !this._closing ? this._hide() : this._show());
     }
@@ -115,7 +115,7 @@ export default class TahoeSpotlight extends Extension {
         this._cancelActionSession();
         for (const source of this._scheduledActions?.values() ?? []) GLib.source_remove(source);
         this._scheduledActions?.clear();
-        Main.wm.removeKeybinding('toggle-spotlight');
+        Main.wm.removeKeybinding('toggle-glasslight');
         this._cancellable?.cancel();
         if (this._tooltipTimer) GLib.source_remove(this._tooltipTimer);
         this._tooltipTimer = 0;
@@ -152,17 +152,17 @@ export default class TahoeSpotlight extends Extension {
     _build() {
         // uiGroup has no layout. Use an explicit fixed container, not a BinLayout
         // that competes with manually assigned x/y coordinates.
-        this._overlay = new St.Widget({name: 'tahoe-spotlight', visible: false, reactive: true,
-            layout_manager: new Clutter.FixedLayout(), style_class: 'tahoe-root'});
+        this._overlay = new St.Widget({name: 'glasslight', visible: false, reactive: true,
+            layout_manager: new Clutter.FixedLayout(), style_class: 'glasslight-root'});
         // Both states occupy the same 708px stage. The main glass can therefore
         // grow beneath the mode bubbles while they dematerialize, instead of
         // making the entire launcher jump sideways during the morph.
-        this._group = new St.Widget({style_class: 'tahoe-launcher',
+        this._group = new St.Widget({style_class: 'glasslight-launcher',
             layout_manager: new Clutter.FixedLayout(), y_align: Clutter.ActorAlign.START});
         this._group.set_pivot_point(0.5, 0.0);
-        const column = new St.BoxLayout({vertical: true, style_class: 'tahoe-column'});
-        this._searchRow = new St.BoxLayout({style_class: 'tahoe-search-row'});
-        this._backButton = this._toolButton('go-previous-symbolic', _('Back to Spotlight'), () => {
+        const column = new St.BoxLayout({vertical: true, style_class: 'glasslight-column'});
+        this._searchRow = new St.BoxLayout({style_class: 'glasslight-search-row'});
+        this._backButton = this._toolButton('go-previous-symbolic', _('Back to Glasslight'), () => {
             if (this._actionSession) {
                 this._cancelActionSession();
                 return;
@@ -172,22 +172,22 @@ export default class TahoeSpotlight extends Extension {
         });
         this._searchRow.add_child(this._backButton);
         this._searchIcon = new St.Icon({icon_name: 'system-search-symbolic', icon_size: 24,
-            y_align: Clutter.ActorAlign.CENTER, style_class: 'tahoe-search-icon'});
+            y_align: Clutter.ActorAlign.CENTER, style_class: 'glasslight-search-icon'});
         this._searchRow.add_child(this._searchIcon);
-        this._entry = new St.Entry({hint_text: _('Spotlight Search'), style_class: 'tahoe-entry',
+        this._entry = new St.Entry({hint_text: _('Glasslight Search'), style_class: 'glasslight-entry',
             can_focus: true, x_expand: true, y_align: Clutter.ActorAlign.CENTER});
         this._searchRow.add_child(this._entry);
         // Right-aligned keyboard hint that appears while a mode chip is hovered.
-        this._searchShortcut = new St.Label({style_class: 'tahoe-search-shortcut', visible: false,
+        this._searchShortcut = new St.Label({style_class: 'glasslight-search-shortcut', visible: false,
             y_align: Clutter.ActorAlign.CENTER});
         this._searchRow.add_child(this._searchShortcut);
         column.add_child(this._searchRow);
-        this._details = new St.BoxLayout({vertical: true, style_class: 'tahoe-details', visible: false});
-        const heading = new St.BoxLayout({style_class: 'tahoe-heading'});
+        this._details = new St.BoxLayout({vertical: true, style_class: 'glasslight-details', visible: false});
+        const heading = new St.BoxLayout({style_class: 'glasslight-heading'});
         this._normalHeading = heading;
-        this._heading = label('', 'tahoe-section');
+        this._heading = label('', 'glasslight-section');
         heading.add_child(this._heading);
-        this._clearButton = new St.Button({label: _('Clear'), style_class: 'tahoe-clear', can_focus: true});
+        this._clearButton = new St.Button({label: _('Clear'), style_class: 'glasslight-clear', can_focus: true});
         this._clearButton.connect('clicked', () => {
             this._cancelClipboardRead();
             // Keep the system clipboard intact, but do not re-import its
@@ -200,8 +200,8 @@ export default class TahoeSpotlight extends Extension {
         heading.add_child(this._clearButton);
         this._details.add_child(heading);
         this._buildAppControls();
-        this._list = new St.BoxLayout({vertical: true, style_class: 'tahoe-list'});
-        this._scroll = new St.ScrollView({style_class: 'tahoe-scroll', overlay_scrollbars: true,
+        this._list = new St.BoxLayout({vertical: true, style_class: 'glasslight-list'});
+        this._scroll = new St.ScrollView({style_class: 'glasslight-scroll', overlay_scrollbars: true,
             hscrollbar_policy: St.PolicyType.NEVER, vscrollbar_policy: St.PolicyType.AUTOMATIC});
         this._scroll.set_child(this._list);
         this._connect(this._scroll.vadjustment, 'notify::value', () => this._showScrollIndicator());
@@ -210,16 +210,16 @@ export default class TahoeSpotlight extends Extension {
             return Clutter.EVENT_PROPAGATE;
         });
         this._details.add_child(this._scroll);
-        this._status = label('', 'tahoe-status');
+        this._status = label('', 'glasslight-status');
         this._details.add_child(this._status);
         column.add_child(this._details);
         this._mainSurface = this._surface(column, 30);
         this._mainSurface.y_align = Clutter.ActorAlign.START;
         this._group.add_child(this._mainSurface);
-        this._modeBar = new St.BoxLayout({style_class: 'tahoe-modes', y_align: Clutter.ActorAlign.START});
+        this._modeBar = new St.BoxLayout({style_class: 'glasslight-modes', y_align: Clutter.ActorAlign.START});
         for (const [i, mode] of MODES.entries()) {
             const shortcut = `Ctrl+${i + 1}`;
-            const button = new St.Button({style_class: 'tahoe-mode', can_focus: true, reactive: true,
+            const button = new St.Button({style_class: 'glasslight-mode', can_focus: true, reactive: true,
                 track_hover: true, accessible_name: `${_(mode.name)} (${shortcut})`});
             button.set_child(new St.Icon({icon_name: mode.icon, icon_size: 24}));
             button.connect('clicked', () => {
@@ -283,7 +283,7 @@ export default class TahoeSpotlight extends Extension {
     }
 
     _toolButton(symbol, name, callback) {
-        const button = new St.Button({style_class: 'tahoe-tool', can_focus: true,
+        const button = new St.Button({style_class: 'glasslight-tool', can_focus: true,
             track_hover: true, accessible_name: name, y_align: Clutter.ActorAlign.CENTER});
         button.set_child(new St.Icon({icon_name: symbol, icon_size: 16}));
         button.connect('clicked', callback);
@@ -291,10 +291,10 @@ export default class TahoeSpotlight extends Extension {
     }
 
     _buildAppControls() {
-        this._appToolbar = new St.BoxLayout({style_class: 'tahoe-app-toolbar', visible: false});
+        this._appToolbar = new St.BoxLayout({style_class: 'glasslight-app-toolbar', visible: false});
         this._categoryPrevious = this._toolButton('go-previous-symbolic', _('Previous category (Alt+←)'), () => this._cycleCategory(-1));
         this._categoryNext = this._toolButton('go-next-symbolic', _('Next category (Alt+→)'), () => this._cycleCategory(1));
-        this._categories = new St.BoxLayout({style_class: 'tahoe-categories'});
+        this._categories = new St.BoxLayout({style_class: 'glasslight-categories'});
         this._categoryScroll = new St.ScrollView({x_expand: true,
             hscrollbar_policy: St.PolicyType.EXTERNAL, vscrollbar_policy: St.PolicyType.NEVER});
         this._categoryScroll.set_child(this._categories);
@@ -307,15 +307,15 @@ export default class TahoeSpotlight extends Extension {
         });
         this._appToolbar.add_child(this._viewButton);
         this._details.add_child(this._appToolbar);
-        this._viewOptions = new St.BoxLayout({style_class: 'tahoe-view-options', visible: false});
-        this._viewOptions.add_child(label(_('Catalogue view'), 'tahoe-section'));
+        this._viewOptions = new St.BoxLayout({style_class: 'glasslight-view-options', visible: false});
+        this._viewOptions.add_child(label(_('Catalogue view'), 'glasslight-section'));
         this._viewButtons = new Map();
         for (const [id, title, symbol] of [['grid', _('Grid'), 'view-grid-symbolic'], ['list', _('List'), 'view-list-symbolic']]) {
-            const button = new St.Button({style_class: 'tahoe-view-choice', can_focus: true,
+            const button = new St.Button({style_class: 'glasslight-view-choice', can_focus: true,
                 toggle_mode: true, accessible_name: title, track_hover: true});
-            const content = new St.BoxLayout({style_class: 'tahoe-view-choice-content'});
+            const content = new St.BoxLayout({style_class: 'glasslight-view-choice-content'});
             content.add_child(new St.Icon({icon_name: symbol, icon_size: 16}));
-            content.add_child(label(title, 'tahoe-section'));
+            content.add_child(label(title, 'glasslight-section'));
             button.set_child(content);
             button.connect('clicked', () => {
                 this._appView = id;
@@ -357,7 +357,7 @@ export default class TahoeSpotlight extends Extension {
             this._categories.destroy_all_children();
             this._categoryButtons = new Map();
             for (const category of categories) {
-                const button = new St.Button({style_class: 'tahoe-category',
+                const button = new St.Button({style_class: 'glasslight-category',
                     can_focus: true, toggle_mode: true, accessible_name: _(category.name), track_hover: true});
                 // Preserve intrinsic widths: the strip scrolls instead of
                 // squeezing every category into an unreadable ellipsis.
@@ -385,13 +385,13 @@ export default class TahoeSpotlight extends Extension {
         const title = query ? format(_('Results · %d'), total)
             : this._appCategory === 'all' ? _('All applications') : _(categories.find(c => c.id === this._appCategory).name);
         if (items.length) this._appendAppSection(title, items);
-        if (!total) this._list.add_child(label(query ? _('No applications found in this category') : _('No applications available'), 'tahoe-empty'));
+        if (!total) this._list.add_child(label(query ? _('No applications found in this category') : _('No applications available'), 'glasslight-empty'));
         const count = format(ngettext('%d app', '%d apps', total), total);
         this._status.text = format(_('%s  ·  ↑ ↓ ← → select  ·  ↵ open  ·  Alt+←/→ categories'), count);
     }
 
     _appendAppSection(title, items) {
-        this._list.add_child(label(title, 'tahoe-app-section tahoe-section'));
+        this._list.add_child(label(title, 'glasslight-app-section glasslight-section'));
         const grid = this._appView === 'grid';
         const columns = this._appColumns;
         const cellWidth = Math.floor(((this._catalogWidth ?? 708) - APP_GRID_HORIZONTAL_INSET
@@ -399,28 +399,28 @@ export default class TahoeSpotlight extends Extension {
         let line;
         items.forEach((item, offset) => {
             if (offset % columns === 0) {
-                line = new St.BoxLayout({style_class: 'tahoe-app-line', x_expand: true});
+                line = new St.BoxLayout({style_class: 'glasslight-app-line', x_expand: true});
                 this._list.add_child(line);
                 this._appVisualRow++;
             }
-            const button = new St.Button({style_class: grid ? 'tahoe-result tahoe-app-tile' : 'tahoe-result',
+            const button = new St.Button({style_class: grid ? 'glasslight-result glasslight-app-tile' : 'glasslight-result',
                 style: grid ? `width: ${cellWidth}px;` : '', x_expand: !grid, can_focus: true,
                 track_hover: true, accessible_name: `${item.title}, ${item.detail}`,
                 x_align: Clutter.ActorAlign.FILL});
-            const content = new St.BoxLayout({vertical: grid, style_class: grid ? 'tahoe-app-tile-content' : 'tahoe-result-row',
+            const content = new St.BoxLayout({vertical: grid, style_class: grid ? 'glasslight-app-tile-content' : 'glasslight-result-row',
                 x_expand: true, x_align: Clutter.ActorAlign.FILL});
             const appIcon = icon(item.gicon);
             appIcon.icon_size = grid ? APP_GRID_ICON_SIZE : 28;
             appIcon.x_align = grid ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.START;
             content.add_child(appIcon);
             const texts = new St.BoxLayout({vertical: true, x_expand: true, y_align: Clutter.ActorAlign.CENTER});
-            const name = label(item.title, grid ? 'tahoe-app-name' : 'tahoe-title');
+            const name = label(item.title, grid ? 'glasslight-app-name' : 'glasslight-title');
             if (grid) {
                 name.x_align = Clutter.ActorAlign.CENTER;
                 name.clutter_text.set_line_alignment(Pango.Alignment.CENTER);
             }
             texts.add_child(name);
-            if (!grid) texts.add_child(label(item.detail, 'tahoe-subtitle'));
+            if (!grid) texts.add_child(label(item.detail, 'glasslight-subtitle'));
             content.add_child(texts);
             button.set_child(content);
             const index = this._rows.length;
@@ -487,7 +487,7 @@ export default class TahoeSpotlight extends Extension {
     _applyTheme() {
         const choice = this._settings.get_string('appearance');
         const dark = choice === 'dark' || (choice === 'system' && this._interface.get_string('color-scheme') === 'prefer-dark');
-        this._overlay.set_style_class_name(`tahoe-root ${dark ? 'tahoe-dark' : 'tahoe-light'}`);
+        this._overlay.set_style_class_name(`glasslight-root ${dark ? 'glasslight-dark' : 'glasslight-light'}`);
         const radius = this._settings.get_int('blur-radius');
         // Match _render's corner radii so changing theme/scale while idle does
         // not shift the main surface (expanded 22, idle 30; mode chips 28).
@@ -552,7 +552,7 @@ export default class TahoeSpotlight extends Extension {
         if (!this._searchIcon || !this._modeBar.visible) return;
         this._tooltipActive = true;
         this._searchIcon.icon_name = mode.icon;
-        this._searchIcon.add_style_class_name('tahoe-search-icon-hint');
+        this._searchIcon.add_style_class_name('glasslight-search-icon-hint');
         this._entry.hint_text = _(mode.name);
         this._searchShortcut.text = shortcut;
         this._searchShortcut.show();
@@ -564,16 +564,16 @@ export default class TahoeSpotlight extends Extension {
         if (!this._tooltipActive || !this._searchIcon) return;
         this._tooltipActive = false;
         this._searchIcon.icon_name = 'system-search-symbolic';
-        this._searchIcon.remove_style_class_name('tahoe-search-icon-hint');
+        this._searchIcon.remove_style_class_name('glasslight-search-icon-hint');
         this._entry.hint_text = this._modeHint();
         this._searchShortcut.hide();
     }
 
     // Localized placeholder for a mode's search entry. Falls back to the generic
-    // Spotlight hint for the "all" mode, which has no MODES entry.
+    // Glasslight hint for the "all" mode, which has no MODES entry.
     _modeHint(mode = this._mode) {
         const hint = MODES.find(m => m.id === mode)?.hint;
-        return hint ? _(hint) : _('Spotlight Search');
+        return hint ? _(hint) : _('Glasslight Search');
     }
 
     _duration(value) {
@@ -859,8 +859,8 @@ export default class TahoeSpotlight extends Extension {
     _activate(callback) {
         this._hide();
         try { callback(); } catch (error) {
-            console.error(`[Tahoe Spotlight] ${error.stack ?? error}`);
-            Main.notifyError('Spotlight', error.message);
+            console.error(`[Glasslight] ${error.stack ?? error}`);
+            Main.notifyError('Glasslight', error.message);
         }
     }
 
@@ -892,7 +892,7 @@ export default class TahoeSpotlight extends Extension {
             if (formatted) result.push({rank: 6000, title: `= ${formatted.display}`,
                 detail: format(_('%s · Enter — copy'), this._entry.get_text().trim()),
                 fallback: 'accessories-calculator-symbolic',
-                styleClass: 'tahoe-action-result tahoe-calc-result',
+                styleClass: 'glasslight-action-result glasslight-calc-result',
                 activate: () => St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, formatted.plain)});
         }
         if (all && !query) return result;
@@ -946,7 +946,7 @@ export default class TahoeSpotlight extends Extension {
     _actionItems() {
         const session = this._actionSession;
         if (session.result) return [{title: session.result.value, detail: session.result.detail,
-            fallback: 'edit-copy-symbolic', styleClass: 'tahoe-action-result',
+            fallback: 'edit-copy-symbolic', styleClass: 'glasslight-action-result',
             activate: () => St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, session.result.value)}];
         const param = session.action.params[session.index];
         const text = this._entry.get_text();
@@ -1068,7 +1068,7 @@ export default class TahoeSpotlight extends Extension {
             const result = await action.run(values);
             if (!this._alive) return;
             if (action.closeBeforeRun) {
-                if (result?.notification) Main.notify('Spotlight', result.notification);
+                if (result?.notification) Main.notify('Glasslight', result.notification);
                 return;
             }
             if (result?.value !== undefined) {
@@ -1081,11 +1081,11 @@ export default class TahoeSpotlight extends Extension {
             } else {
                 this._actionSession = null;
                 this._hide();
-                if (result?.notification) Main.notify('Spotlight', result.notification);
+                if (result?.notification) Main.notify('Glasslight', result.notification);
             }
         } catch (error) {
-            console.warn(`[Tahoe Spotlight] Action ${action.id}: ${error.stack ?? error}`);
-            if (action.closeBeforeRun || !this._overlay?.visible) Main.notifyError('Spotlight', error.message);
+            console.warn(`[Glasslight] Action ${action.id}: ${error.stack ?? error}`);
+            if (action.closeBeforeRun || !this._overlay?.visible) Main.notifyError('Glasslight', error.message);
             else {
                 this._actionSession = null;
                 if (this._overlay?.visible) {
@@ -1093,7 +1093,7 @@ export default class TahoeSpotlight extends Extension {
                     this._entry.hint_text = this._modeHint();
                     this._render();
                 }
-                Main.notifyError('Spotlight', error.message);
+                Main.notifyError('Glasslight', error.message);
             }
         }
     }
@@ -1135,22 +1135,22 @@ export default class TahoeSpotlight extends Extension {
         else if (expanded) {
             const items = this._items(query);
             for (const item of items) {
-                const button = new St.Button({style_class: `tahoe-result${item.styleClass ? ` ${item.styleClass}` : ''}`,
+                const button = new St.Button({style_class: `glasslight-result${item.styleClass ? ` ${item.styleClass}` : ''}`,
                     x_expand: true, can_focus: true,
                     track_hover: true, x_align: Clutter.ActorAlign.FILL});
                 // St.Button is a Bin: explicitly fill its child so text cannot
                 // collapse into a centred block (the previous wide-list bug).
-                const row = new St.BoxLayout({style_class: 'tahoe-result-row', x_expand: true, x_align: Clutter.ActorAlign.FILL});
+                const row = new St.BoxLayout({style_class: 'glasslight-result-row', x_expand: true, x_align: Clutter.ActorAlign.FILL});
                 if (item.thumbnail) {
-                    const preview = new St.Bin({style_class: 'tahoe-clipboard-preview', y_align: Clutter.ActorAlign.CENTER});
+                    const preview = new St.Bin({style_class: 'glasslight-clipboard-preview', y_align: Clutter.ActorAlign.CENTER});
                     preview.set_child(new St.Widget({content: item.thumbnail,
                         x_align: Clutter.ActorAlign.CENTER, y_align: Clutter.ActorAlign.CENTER,
                         style: `width: ${item.thumbnailWidth}px; height: ${item.thumbnailHeight}px;`}));
                     row.add_child(preview);
                 } else row.add_child(icon(item.gicon, item.fallback));
                 const texts = new St.BoxLayout({vertical: true, x_expand: true, y_align: Clutter.ActorAlign.CENTER});
-                texts.add_child(label(item.title, 'tahoe-title'));
-                texts.add_child(label(item.detail, 'tahoe-subtitle'));
+                texts.add_child(label(item.title, 'glasslight-title'));
+                texts.add_child(label(item.detail, 'glasslight-subtitle'));
                 row.add_child(texts);
                 button.set_child(row);
                 const index = this._rows.length;
@@ -1159,7 +1159,7 @@ export default class TahoeSpotlight extends Extension {
                 this._list.add_child(button);
                 this._rows.push({button, item});
             }
-            if (!items.length) this._list.add_child(label(this._mode === 'clipboard' && !query ? _('No supported text or image in the clipboard') : _('No matches found'), 'tahoe-empty'));
+            if (!items.length) this._list.add_child(label(this._mode === 'clipboard' && !query ? _('No supported text or image in the clipboard') : _('No matches found'), 'glasslight-empty'));
             this._status.text = this._actionSession
                 ? (this._actionSession.result ? _('↵  copy     esc  back to actions')
                     : format(_('%d of %d     ↵  continue     esc  cancel'), this._actionSession.index + 1, this._actionSession.action.params.length))
@@ -1170,7 +1170,7 @@ export default class TahoeSpotlight extends Extension {
         this._mainSurface.configure(expanded ? 22 : 30, this._settings.get_int('blur-radius'));
         this._select(0, false);
         this._scroll.vadjustment.value = 0;
-        // Rendering is not user scrolling; keep Tahoe's overlay indicator
+        // Rendering is not user scrolling; keep the overlay indicator
         // hidden until the wheel, touchpad, or keyboard actually moves it.
         this._hideScrollIndicator();
         if (focusedApp) {
@@ -1378,13 +1378,13 @@ export default class TahoeSpotlight extends Extension {
                     }
                 } catch (e) {
                     if (!e.matches?.(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED) && !e.matches?.(Gio.IOErrorEnum, Gio.IOErrorEnum.PERMISSION_DENIED))
-                        console.debug(`[Tahoe Spotlight] Index: ${e.message}`);
+                        console.debug(`[Glasslight] Index: ${e.message}`);
                 } finally {
                     if (enumerator) enumerator.close_async(GLib.PRIORITY_LOW, null, (source, result) => {try {source.close_finish(result);} catch (_) { /* Removed directory. */ }});
                 }
             }
             if (!cancel.is_cancelled()) {this._indexing = false; this._queueSearch();}
         };
-        run().catch(error => console.error(`[Tahoe Spotlight] Index: ${error}`));
+        run().catch(error => console.error(`[Glasslight] Index: ${error}`));
     }
 }

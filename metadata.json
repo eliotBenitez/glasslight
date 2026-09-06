@@ -1,9 +1,9 @@
 {
-  "uuid": "tahoe-spotlight",
-  "name": "Tahoe Spotlight",
-  "description": "A fast Liquid Glass Spotlight-style launcher for applications and files.",
+  "uuid": "glasslight",
+  "name": "Glasslight",
+  "description": "A fast glass-style launcher for applications, files, actions, and calculations.",
   "shell-version": ["50"],
   "version": 18,
-  "settings-schema": "org.gnome.shell.extensions.tahoe-spotlight",
-  "gettext-domain": "tahoe-spotlight"
+  "settings-schema": "org.gnome.shell.extensions.glasslight",
+  "gettext-domain": "glasslight"
 }

@@ -28,8 +28,8 @@ jobs:
 
       - name: Verify required archive contents
         run: |
-          archive=dist/Tahoe-Spotlight-GNOME-50.shell-extension.zip
+          archive=dist/Glasslight-GNOME-50.shell-extension.zip
           unzip -Z1 "$archive" | grep -Fx extension.js
           unzip -Z1 "$archive" | grep -Fx i18n.js
           unzip -Z1 "$archive" | grep -Fx schemas/gschemas.compiled
-          unzip -Z1 "$archive" | grep -Fx locale/ru/LC_MESSAGES/tahoe-spotlight.mo
+          unzip -Z1 "$archive" | grep -Fx locale/ru/LC_MESSAGES/glasslight.mo

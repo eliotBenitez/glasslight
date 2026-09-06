@@ -1,4 +1,4 @@
-# Участие в разработке Tahoe Spotlight
+# Участие в разработке Glasslight
 
 Спасибо за желание помочь. Проект рассчитан на GNOME Shell 50 и использует GJS
 с ES-модулями без Node.js, пакетного менеджера и этапа транспиляции.
@@ -19,11 +19,11 @@ make check
 make package
 ```
 
-Архив появится в `dist/Tahoe-Spotlight-GNOME-50.shell-extension.zip`.
+Архив появится в `dist/Glasslight-GNOME-50.shell-extension.zip`.
 
 ## Правила изменений
 
-- Сохраняйте UUID `tahoe-spotlight` и существующий стиль JavaScript.
+- Сохраняйте UUID `glasslight` и существующий стиль JavaScript.
 - Новые пользовательские строки оборачивайте в `_()`, `ngettext()` или
   `pgettext()` и обновляйте файлы `po/` и скомпилированный перевод.
 - Любой новый сигнал, таймер, cancellable или actor должен очищаться в

@@ -1,38 +1,38 @@
 /* Background colours are neutral tints OVER the real blurred window sample. */
-.tahoe-root { background-color: transparent; font-family: sans-serif; }
-.tahoe-light { color: #252526; }
-.tahoe-dark { color: #f3f3f4; }
-.tahoe-launcher { spacing: 14px; }
-.tahoe-column { padding: 0; }
-.tahoe-glass { background-color: transparent; }
-.tahoe-glass-tint { border: 1px solid; box-shadow: 0 4px 10px 0 rgba(0,0,0,0.16); }
-.tahoe-glass-highlight { border: 1px solid rgba(255,255,255,0.72); background-color: rgba(255,255,255,0.035); }
-.tahoe-light .tahoe-glass-tint { background-color: rgba(247,247,247,0.62); border-color: rgba(255,255,255,0.76); }
-.tahoe-dark .tahoe-glass-tint { background-color: rgba(24,24,26,0.68); border-color: rgba(255,255,255,0.23); box-shadow: 0 5px 12px 0 rgba(0,0,0,0.22); }
-.tahoe-dark .tahoe-glass-highlight { border-color: rgba(255,255,255,0.42); background-color: rgba(255,255,255,0.025); }
-.tahoe-search-row { height: 62px; padding: 0 20px; spacing: 13px; }
-.tahoe-search-icon { color: inherit; opacity: 0.7; }
-.tahoe-entry { padding: 0; border: 0; border-radius: 0; background-color: transparent; color: inherit; box-shadow: none; font-size: 21px; caret-color: #0a84ff; }
-.tahoe-entry:focus { border: 0; background-color: transparent; box-shadow: none; }
-.tahoe-light .tahoe-entry StLabel { color: rgba(30,30,30,0.46); }
-.tahoe-dark .tahoe-entry StLabel { color: rgba(255,255,255,0.50); }
-.tahoe-modes { spacing: 10px; padding-top: 3px; }
-.tahoe-mode { width: 56px; height: 56px; padding: 0; border: 0; border-radius: 28px; background-color: transparent; color: inherit; }
-.tahoe-light .tahoe-mode:hover { background-color: rgba(255,255,255,0.3); }
-.tahoe-dark .tahoe-mode:hover { background-color: rgba(255,255,255,0.1); }
-.tahoe-light .tahoe-mode:selected { background-color: rgba(0,0,0,0.10); color: #111; }
-.tahoe-dark .tahoe-mode:selected { background-color: rgba(255,255,255,0.20); color: #fff; }
-.tahoe-mode:focus { box-shadow: inset 0 0 0 2px rgba(10,132,255,0.85); }
-.tahoe-details { padding: 0 8px 8px; }
-.tahoe-heading { padding: 7px 10px; border-top: 1px solid rgba(128,128,128,0.2); }
-.tahoe-section { font-size: 11px; font-weight: 600; }
-.tahoe-clear { font-size: 11px; padding: 1px 6px; border: 0; border-radius: 6px; color: inherit; background-color: transparent; }
-.tahoe-clear:hover { background-color: rgba(128,128,128,0.2); }
-.tahoe-list { spacing: 2px; }
-.tahoe-scroll StScrollBar { min-width: 10px; min-height: 10px; padding: 3px 2px 3px 3px; }
-.tahoe-scroll StScrollBar StBin#trough { border: 0; border-radius: 999px; background-color: transparent; }
-.tahoe-scroll StScrollBar > .vhandle,
-.tahoe-scroll StScrollBar > .hhandle {
+.glasslight-root { background-color: transparent; font-family: sans-serif; }
+.glasslight-light { color: #252526; }
+.glasslight-dark { color: #f3f3f4; }
+.glasslight-launcher { spacing: 14px; }
+.glasslight-column { padding: 0; }
+.glasslight-glass { background-color: transparent; }
+.glasslight-glass-tint { border: 1px solid; box-shadow: 0 4px 10px 0 rgba(0,0,0,0.16); }
+.glasslight-glass-highlight { border: 1px solid rgba(255,255,255,0.72); background-color: rgba(255,255,255,0.035); }
+.glasslight-light .glasslight-glass-tint { background-color: rgba(247,247,247,0.62); border-color: rgba(255,255,255,0.76); }
+.glasslight-dark .glasslight-glass-tint { background-color: rgba(24,24,26,0.68); border-color: rgba(255,255,255,0.23); box-shadow: 0 5px 12px 0 rgba(0,0,0,0.22); }
+.glasslight-dark .glasslight-glass-highlight { border-color: rgba(255,255,255,0.42); background-color: rgba(255,255,255,0.025); }
+.glasslight-search-row { height: 62px; padding: 0 20px; spacing: 13px; }
+.glasslight-search-icon { color: inherit; opacity: 0.7; }
+.glasslight-entry { padding: 0; border: 0; border-radius: 0; background-color: transparent; color: inherit; box-shadow: none; font-size: 21px; caret-color: #0a84ff; }
+.glasslight-entry:focus { border: 0; background-color: transparent; box-shadow: none; }
+.glasslight-light .glasslight-entry StLabel { color: rgba(30,30,30,0.46); }
+.glasslight-dark .glasslight-entry StLabel { color: rgba(255,255,255,0.50); }
+.glasslight-modes { spacing: 10px; padding-top: 3px; }
+.glasslight-mode { width: 56px; height: 56px; padding: 0; border: 0; border-radius: 28px; background-color: transparent; color: inherit; }
+.glasslight-light .glasslight-mode:hover { background-color: rgba(255,255,255,0.3); }
+.glasslight-dark .glasslight-mode:hover { background-color: rgba(255,255,255,0.1); }
+.glasslight-light .glasslight-mode:selected { background-color: rgba(0,0,0,0.10); color: #111; }
+.glasslight-dark .glasslight-mode:selected { background-color: rgba(255,255,255,0.20); color: #fff; }
+.glasslight-mode:focus { box-shadow: inset 0 0 0 2px rgba(10,132,255,0.85); }
+.glasslight-details { padding: 0 8px 8px; }
+.glasslight-heading { padding: 7px 10px; border-top: 1px solid rgba(128,128,128,0.2); }
+.glasslight-section { font-size: 11px; font-weight: 600; }
+.glasslight-clear { font-size: 11px; padding: 1px 6px; border: 0; border-radius: 6px; color: inherit; background-color: transparent; }
+.glasslight-clear:hover { background-color: rgba(128,128,128,0.2); }
+.glasslight-list { spacing: 2px; }
+.glasslight-scroll StScrollBar { min-width: 10px; min-height: 10px; padding: 3px 2px 3px 3px; }
+.glasslight-scroll StScrollBar StBin#trough { border: 0; border-radius: 999px; background-color: transparent; }
+.glasslight-scroll StScrollBar > .vhandle,
+.glasslight-scroll StScrollBar > .hhandle {
   min-width: 5px;
   min-height: 28px;
   border: 0;
@@ -40,48 +40,48 @@
   background-color: transparent;
   transition-duration: 180ms;
 }
-.tahoe-light .tahoe-scroll.scrolling StScrollBar > .vhandle,
-.tahoe-light .tahoe-scroll StScrollBar > .vhandle:hover,
-.tahoe-light .tahoe-scroll StScrollBar > .vhandle:active { background-color: rgba(42,42,44,0.38); }
-.tahoe-dark .tahoe-scroll.scrolling StScrollBar > .vhandle,
-.tahoe-dark .tahoe-scroll StScrollBar > .vhandle:hover,
-.tahoe-dark .tahoe-scroll StScrollBar > .vhandle:active { background-color: rgba(245,245,247,0.40); }
-.tahoe-light .tahoe-scroll StScrollBar > .vhandle:hover { background-color: rgba(42,42,44,0.56); }
-.tahoe-dark .tahoe-scroll StScrollBar > .vhandle:hover { background-color: rgba(245,245,247,0.58); }
-.tahoe-result { padding: 0; border: 0; border-radius: 10px; color: inherit; background-color: transparent; }
-.tahoe-result-row { padding: 7px 10px; spacing: 11px; }
-.tahoe-title { font-size: 13px; font-weight: 500; }
-.tahoe-subtitle { font-size: 11px; padding-top: 1px; }
-.tahoe-light .tahoe-subtitle, .tahoe-light .tahoe-section, .tahoe-light .tahoe-status { color: rgba(32,32,34,0.62); }
-.tahoe-dark .tahoe-subtitle, .tahoe-dark .tahoe-section, .tahoe-dark .tahoe-status { color: rgba(245,245,247,0.62); }
-.tahoe-light .tahoe-result:selected, .tahoe-light .tahoe-result:focus { background-color: rgba(0,0,0,0.085); }
-.tahoe-dark .tahoe-result:selected, .tahoe-dark .tahoe-result:focus { background-color: rgba(255,255,255,0.14); }
-.tahoe-light .tahoe-result:hover { background-color: rgba(0,0,0,0.055); }
-.tahoe-dark .tahoe-result:hover { background-color: rgba(255,255,255,0.09); }
-.tahoe-action-result .tahoe-title { font-size: 19px; font-weight: 500; }
-.tahoe-action-result .tahoe-result-row { padding-top: 12px; padding-bottom: 12px; }
-.tahoe-calc-result .tahoe-title { color: #0a84ff; font-weight: 600; }
-.tahoe-calc-result .tahoe-result-icon { color: #0a84ff; }
-.tahoe-empty { padding: 24px 12px; font-size: 13px; }
-.tahoe-status { padding: 9px 10px 0; font-size: 10px; }
-.tahoe-clipboard-preview { width: 72px; height: 64px; padding: 4px; border-radius: 8px; background-color: rgba(128,128,128,0.16); }
-.tahoe-app-toolbar { spacing: 4px; padding: 6px 4px; border-top: 1px solid rgba(128,128,128,0.2); }
-.tahoe-categories { spacing: 4px; }
-.tahoe-tool { padding: 7px; border: 0; border-radius: 15px; color: inherit; background-color: transparent; }
-.tahoe-category { padding: 7px 10px; border: 0; border-radius: 14px; font-size: 11px; color: inherit; background-color: transparent; }
-.tahoe-view-options { spacing: 6px; padding: 4px 10px 8px; }
-.tahoe-view-choice { padding: 6px 10px; border: 0; border-radius: 9px; background-color: transparent; color: inherit; }
-.tahoe-view-choice-content { spacing: 7px; }
-.tahoe-light .tahoe-category:checked, .tahoe-light .tahoe-view-choice:checked { background-color: rgba(0,0,0,0.10); }
-.tahoe-dark .tahoe-category:checked, .tahoe-dark .tahoe-view-choice:checked { background-color: rgba(255,255,255,0.18); }
-.tahoe-tool:hover, .tahoe-category:hover, .tahoe-view-choice:hover { background-color: rgba(128,128,128,0.16); }
-.tahoe-tool:focus, .tahoe-category:focus, .tahoe-view-choice:focus, .tahoe-app-tile:focus { box-shadow: inset 0 0 0 2px rgba(10,132,255,0.85); }
-.tahoe-app-section { padding: 10px 10px 5px; }
-.tahoe-app-line { spacing: 4px; padding: 0 6px; }
-.tahoe-app-tile { border-radius: 12px; }
-.tahoe-app-tile-content { padding: 6px 2px; spacing: 5px; }
-.tahoe-app-name { font-size: 12px; font-weight: 400; }
-.tahoe-search-icon-hint { opacity: 1; }
-.tahoe-search-shortcut { font-size: 13px; font-weight: 600; padding: 3px 9px; border-radius: 7px; }
-.tahoe-light .tahoe-search-shortcut { background-color: rgba(0,0,0,0.08); color: rgba(28,28,30,0.66); }
-.tahoe-dark .tahoe-search-shortcut { background-color: rgba(255,255,255,0.14); color: rgba(243,243,244,0.78); }
+.glasslight-light .glasslight-scroll.scrolling StScrollBar > .vhandle,
+.glasslight-light .glasslight-scroll StScrollBar > .vhandle:hover,
+.glasslight-light .glasslight-scroll StScrollBar > .vhandle:active { background-color: rgba(42,42,44,0.38); }
+.glasslight-dark .glasslight-scroll.scrolling StScrollBar > .vhandle,
+.glasslight-dark .glasslight-scroll StScrollBar > .vhandle:hover,
+.glasslight-dark .glasslight-scroll StScrollBar > .vhandle:active { background-color: rgba(245,245,247,0.40); }
+.glasslight-light .glasslight-scroll StScrollBar > .vhandle:hover { background-color: rgba(42,42,44,0.56); }
+.glasslight-dark .glasslight-scroll StScrollBar > .vhandle:hover { background-color: rgba(245,245,247,0.58); }
+.glasslight-result { padding: 0; border: 0; border-radius: 10px; color: inherit; background-color: transparent; }
+.glasslight-result-row { padding: 7px 10px; spacing: 11px; }
+.glasslight-title { font-size: 13px; font-weight: 500; }
+.glasslight-subtitle { font-size: 11px; padding-top: 1px; }
+.glasslight-light .glasslight-subtitle, .glasslight-light .glasslight-section, .glasslight-light .glasslight-status { color: rgba(32,32,34,0.62); }
+.glasslight-dark .glasslight-subtitle, .glasslight-dark .glasslight-section, .glasslight-dark .glasslight-status { color: rgba(245,245,247,0.62); }
+.glasslight-light .glasslight-result:selected, .glasslight-light .glasslight-result:focus { background-color: rgba(0,0,0,0.085); }
+.glasslight-dark .glasslight-result:selected, .glasslight-dark .glasslight-result:focus { background-color: rgba(255,255,255,0.14); }
+.glasslight-light .glasslight-result:hover { background-color: rgba(0,0,0,0.055); }
+.glasslight-dark .glasslight-result:hover { background-color: rgba(255,255,255,0.09); }
+.glasslight-action-result .glasslight-title { font-size: 19px; font-weight: 500; }
+.glasslight-action-result .glasslight-result-row { padding-top: 12px; padding-bottom: 12px; }
+.glasslight-calc-result .glasslight-title { color: #0a84ff; font-weight: 600; }
+.glasslight-calc-result .glasslight-result-icon { color: #0a84ff; }
+.glasslight-empty { padding: 24px 12px; font-size: 13px; }
+.glasslight-status { padding: 9px 10px 0; font-size: 10px; }
+.glasslight-clipboard-preview { width: 72px; height: 64px; padding: 4px; border-radius: 8px; background-color: rgba(128,128,128,0.16); }
+.glasslight-app-toolbar { spacing: 4px; padding: 6px 4px; border-top: 1px solid rgba(128,128,128,0.2); }
+.glasslight-categories { spacing: 4px; }
+.glasslight-tool { padding: 7px; border: 0; border-radius: 15px; color: inherit; background-color: transparent; }
+.glasslight-category { padding: 7px 10px; border: 0; border-radius: 14px; font-size: 11px; color: inherit; background-color: transparent; }
+.glasslight-view-options { spacing: 6px; padding: 4px 10px 8px; }
+.glasslight-view-choice { padding: 6px 10px; border: 0; border-radius: 9px; background-color: transparent; color: inherit; }
+.glasslight-view-choice-content { spacing: 7px; }
+.glasslight-light .glasslight-category:checked, .glasslight-light .glasslight-view-choice:checked { background-color: rgba(0,0,0,0.10); }
+.glasslight-dark .glasslight-category:checked, .glasslight-dark .glasslight-view-choice:checked { background-color: rgba(255,255,255,0.18); }
+.glasslight-tool:hover, .glasslight-category:hover, .glasslight-view-choice:hover { background-color: rgba(128,128,128,0.16); }
+.glasslight-tool:focus, .glasslight-category:focus, .glasslight-view-choice:focus, .glasslight-app-tile:focus { box-shadow: inset 0 0 0 2px rgba(10,132,255,0.85); }
+.glasslight-app-section { padding: 10px 10px 5px; }
+.glasslight-app-line { spacing: 4px; padding: 0 6px; }
+.glasslight-app-tile { border-radius: 12px; }
+.glasslight-app-tile-content { padding: 6px 2px; spacing: 5px; }
+.glasslight-app-name { font-size: 12px; font-weight: 400; }
+.glasslight-search-icon-hint { opacity: 1; }
+.glasslight-search-shortcut { font-size: 13px; font-weight: 600; padding: 3px 9px; border-radius: 7px; }
+.glasslight-light .glasslight-search-shortcut { background-color: rgba(0,0,0,0.08); color: rgba(28,28,30,0.66); }
+.glasslight-dark .glasslight-search-shortcut { background-color: rgba(255,255,255,0.14); color: rgba(243,243,244,0.78); }

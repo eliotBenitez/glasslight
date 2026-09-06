@@ -1,5 +1,5 @@
 name: Сообщение об ошибке
-description: Сообщить о воспроизводимой проблеме Tahoe Spotlight
+description: Сообщить о воспроизводимой проблеме Glasslight
 title: "[Bug]: "
 labels:
   - bug
@@ -18,7 +18,7 @@ body:
   - type: input
     id: extension-version
     attributes:
-      label: Версия Tahoe Spotlight
+      label: Версия Glasslight
       description: Значение `version` из metadata.json или номер релиза.
     validations:
       required: true
@@ -27,7 +27,7 @@ body:
     attributes:
       label: Шаги воспроизведения
       placeholder: |
-        1. Открыть Spotlight сочетанием Alt+Space
+        1. Открыть Glasslight сочетанием Alt+Space
         2. ...
     validations:
       required: true
@@ -47,5 +47,5 @@ body:
     id: logs
     attributes:
       label: Журнал
-      description: Вставьте релевантные строки с префиксом `[Tahoe Spotlight]`, удалив приватные данные.
+      description: Вставьте релевантные строки с префиксом `[Glasslight]`, удалив приватные данные.
       render: shell

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="tahoe-spotlight">
-  <schema id="org.gnome.shell.extensions.tahoe-spotlight" path="/org/gnome/shell/extensions/tahoe-spotlight/">
+<schemalist gettext-domain="glasslight">
+  <schema id="org.gnome.shell.extensions.glasslight" path="/org/gnome/shell/extensions/glasslight/">
     <key name="apps-view" type="s">
       <choices><choice value="grid"/><choice value="list"/></choices>
       <default>'grid'</default>
@@ -20,9 +20,9 @@
       <default>true</default>
       <summary>Keep up to 20 text and image clipboard entries in memory</summary>
     </key>
-    <key name="toggle-spotlight" type="as">
+    <key name="toggle-glasslight" type="as">
       <default>['&lt;Alt&gt;space']</default>
-      <summary>Toggle Tahoe Spotlight</summary>
+      <summary>Toggle Glasslight</summary>
       <description>The keyboard shortcut used to show or hide the launcher.</description>
     </key>
   </schema>

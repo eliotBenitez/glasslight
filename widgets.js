@@ -12,5 +12,5 @@ export function label(text, style) {
 
 export function icon(gicon, fallback = 'application-x-executable-symbolic') {
     return new St.Icon({gicon: gicon ?? new Gio.ThemedIcon({name: fallback}), icon_size: 28,
-        y_align: Clutter.ActorAlign.CENTER, style_class: 'tahoe-result-icon'});
+        y_align: Clutter.ActorAlign.CENTER, style_class: 'glasslight-result-icon'});
 }

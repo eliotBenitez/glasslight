@@ -16,7 +16,7 @@ let cached = null;
 
 function extension() {
     cached ??= Extension.lookupByURL(import.meta.url);
-    if (!cached) throw new Error('Tahoe Spotlight: extension context unavailable for gettext');
+    if (!cached) throw new Error('Glasslight: extension context unavailable for gettext');
     return cached;
 }
 

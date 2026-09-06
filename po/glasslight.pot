@@ -1,9 +1,9 @@
-# Tahoe Spotlight translation template.
-# This file is distributed under the same license as the Tahoe Spotlight extension.
+# Glasslight translation template.
+# This file is distributed under the same license as the Glasslight extension.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Tahoe Spotlight\n"
+"Project-Id-Version: Glasslight\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-05 23:29+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -522,11 +522,11 @@ msgid "Unsupported image format"
 msgstr ""
 
 #: extension.js:165
-msgid "Back to Spotlight"
+msgid "Back to Glasslight"
 msgstr ""
 
 #: extension.js:177 extension.js:576
-msgid "Spotlight Search"
+msgid "Glasslight Search"
 msgstr ""
 
 #: extension.js:190

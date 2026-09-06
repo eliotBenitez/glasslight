@@ -1,5 +1,5 @@
-EXTENSION_UUID := tahoe-spotlight
-ARCHIVE := dist/Tahoe-Spotlight-GNOME-50.shell-extension.zip
+EXTENSION_UUID := glasslight
+ARCHIVE := dist/Glasslight-GNOME-50.shell-extension.zip
 JS_FILES := $(sort $(wildcard *.js))
 
 .PHONY: all check package install clean
