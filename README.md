@@ -34,7 +34,7 @@ blur обеспечивает контраст; фиксированного г�
 Открыть настройки темы, силы размытия, истории и сочетания клавиш:
 
 ```sh
-gnome-extensions prefs tahoe-spotlight@codex
+gnome-extensions prefs tahoe-spotlight
 ```
 
 ## Четыре режима
@@ -220,7 +220,7 @@ make package
 репозитория:
 
 ```sh
-gnome-extensions disable tahoe-spotlight@codex
+gnome-extensions disable tahoe-spotlight
 gnome-extensions install --force dist/Tahoe-Spotlight-GNOME-50.shell-extension.zip
 ```
 
@@ -230,7 +230,7 @@ JavaScript-модулей простого disable/enable недостаточн
 После повторного входа:
 
 ```sh
-gnome-extensions enable tahoe-spotlight@codex
+gnome-extensions enable tahoe-spotlight
 ```
 
 GNOME может занимать Alt+Space меню окна. Если есть конфликт, можно освободить
@@ -249,17 +249,17 @@ gsettings set org.gnome.desktop.wm.keybindings activate-window-menu "['<Alt>spac
 Отключить расширение:
 
 ```sh
-gnome-extensions disable tahoe-spotlight@codex
+gnome-extensions disable tahoe-spotlight
 ```
 
 ## Языки
 
 Интерфейс переведён через gettext и следует активной локали GNOME. Исходные
 строки — английские; в комплекте есть русский перевод
-(`locale/ru/LC_MESSAGES/tahoe-spotlight@codex.mo`). При локали `ru` расширение
+(`locale/ru/LC_MESSAGES/tahoe-spotlight.mo`). При локали `ru` расширение
 показывает русский, иначе — английский. Шаблон сообщений — `po/tahoe-spotlight.pot`,
 переводы — `po/<язык>.po`. Чтобы добавить язык: создайте `po/<код>.po` из шаблона
-(`msginit`), переведите и скомпилируйте в `locale/<код>/LC_MESSAGES/tahoe-spotlight@codex.mo`
+(`msginit`), переведите и скомпилируйте в `locale/<код>/LC_MESSAGES/tahoe-spotlight.mo`
 командой `msgfmt`. Быстрые клавиши действий (`timer`, `rn`, `case` …) не зависят
 от языка, а поле «регистр текста» принимает и английские, и русские варианты.
 

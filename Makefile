@@ -1,4 +1,4 @@
-EXTENSION_UUID := tahoe-spotlight@codex
+EXTENSION_UUID := tahoe-spotlight
 ARCHIVE := dist/Tahoe-Spotlight-GNOME-50.shell-extension.zip
 JS_FILES := $(sort $(wildcard *.js))
 

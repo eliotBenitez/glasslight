@@ -4,7 +4,7 @@
 
 Tahoe Spotlight is a GNOME Shell 50 extension that provides a keyboard-driven launcher for applications, files, actions, calculations, and clipboard history. It is written in modern GJS using ES modules and GNOME introspection APIs; there is no Node.js runtime, package manager, transpilation step, or browser DOM.
 
-The extension UUID is `tahoe-spotlight@codex`. Preserve it in `metadata.json`, schema paths, install commands, and settings lookups unless the project is intentionally forked under a new identity.
+The extension UUID is `tahoe-spotlight`. Preserve it in `metadata.json`, schema paths, install commands, and settings lookups unless the project is intentionally forked under a new identity.
 
 ## Project Structure & Module Organization
 
@@ -15,9 +15,9 @@ The extension UUID is `tahoe-spotlight@codex`. Preserve it in `metadata.json`, s
 - `clipboardFiles.js` validates clipboard MIME types and reads local image/file data with byte limits and cancellation.
 - `widgets.js` contains reusable actor factories; `constants.js` contains shared modes, limits, grid dimensions, and motion timings.
 - `prefs.js` builds the Libadwaita preferences UI. `stylesheet.css` contains all Shell theme rules.
-- `metadata.json` declares extension compatibility and the `gettext-domain` (`tahoe-spotlight@codex`). `schemas/*.gschema.xml` defines persistent settings; `schemas/gschemas.compiled` is generated from it.
+- `metadata.json` declares extension compatibility and the `gettext-domain` (`tahoe-spotlight`). `schemas/*.gschema.xml` defines persistent settings; `schemas/gschemas.compiled` is generated from it.
 - `i18n.js` exposes the shell-side gettext helpers (`_`, `ngettext`, `pgettext`, and a `%s`/`%d` `format()`), resolved from the extension via `Extension.lookupByURL`. `prefs.js` imports gettext from the prefs resource instead, since it runs in a separate process.
-- `po/tahoe-spotlight.pot` is the message template; `po/<lang>.po` are the translations, compiled to `locale/<lang>/LC_MESSAGES/tahoe-spotlight@codex.mo`.
+- `po/tahoe-spotlight.pot` is the message template; `po/<lang>.po` are the translations, compiled to `locale/<lang>/LC_MESSAGES/tahoe-spotlight.mo`.
 - `tests/core.test.js` covers the Shell-independent calculator, search, and application-catalogue helpers with GJS.
 - `Makefile` provides the validation, packaging, and local installation entry points; `.github/` contains CI and contribution templates.
 - `README.md` is the user-facing behavior, installation, privacy, and limitation reference. Update it when visible behavior changes.
@@ -38,7 +38,7 @@ Strings passed to `_()` as variables (the `MODES`/`CATEGORIES` names) are invisi
 
 ```sh
 msgmerge --update po/ru.po po/tahoe-spotlight.pot
-msgfmt po/ru.po -o locale/ru/LC_MESSAGES/tahoe-spotlight@codex.mo
+msgfmt po/ru.po -o locale/ru/LC_MESSAGES/tahoe-spotlight.mo
 ```
 
 Add a new language by running `msginit --locale=<code> --input=po/tahoe-spotlight.pot --output-file=po/<code>.po`, translating it, and compiling it to the matching `locale/<code>/LC_MESSAGES/` path. Include the regenerated `.mo` with the change, and add `po` and `locale` to the packaging `zip` command.
@@ -57,9 +57,9 @@ Run commands from the repository root:
 make check
 make package
 make install
-gnome-extensions prefs tahoe-spotlight@codex
-gnome-extensions disable tahoe-spotlight@codex
-gnome-extensions enable tahoe-spotlight@codex
+gnome-extensions prefs tahoe-spotlight
+gnome-extensions disable tahoe-spotlight
+gnome-extensions enable tahoe-spotlight
 ```
 
 `make check` validates metadata, translations, the XML schema, and pure-JavaScript core tests. `make package` also refreshes `schemas/gschemas.compiled` and the compiled Russian catalogue, then creates the distributable archive in `dist/`. Run it after schema or translation edits and include regenerated tracked files with the change.
