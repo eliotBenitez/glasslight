@@ -16,7 +16,7 @@ package: check
 	glib-compile-schemas --strict schemas
 	msgfmt --check po/ru.po -o locale/ru/LC_MESSAGES/$(EXTENSION_UUID).mo
 	mkdir -p dist
-	zip -FSrq $(ARCHIVE) $(JS_FILES) stylesheet.css metadata.json schemas locale
+	zip -FSrq $(ARCHIVE) $(JS_FILES) icon.png stylesheet.css metadata.json schemas locale
 	unzip -tq $(ARCHIVE)
 	@printf 'Created %s\n' '$(ARCHIVE)'
 

@@ -1,5 +1,6 @@
 import Clutter from 'gi://Clutter';
 import Cogl from 'gi://Cogl';
+import Cairo from 'gi://cairo';
 import Gio from 'gi://Gio';
 import GdkPixbuf from 'gi://GdkPixbuf';
 import GLib from 'gi://GLib';
@@ -22,6 +23,14 @@ import {label, icon} from './widgets.js';
 import {buildActions, quickAction} from './actions.js';
 import {_, ngettext, format} from './i18n.js';
 
+// Text preview reads only a bounded head of the file and clamps what it shows,
+// so a huge log or unbounded stream can never balloon the launcher.
+const MAX_PREVIEW_TEXT_BYTES = 128 * 1024;
+const MAX_PREVIEW_TEXT_LINES = 24;
+const MAX_PREVIEW_TEXT_CHARS = 1600;
+const TEXT_PREVIEW_EXTENSIONS = ['.txt', '.md', '.markdown', '.text', '.log', '.csv',
+    '.tsv', '.json', '.xml', '.yml', '.yaml', '.ini', '.conf', '.cfg', '.rst'];
+
 export default class GlasslightExtension extends Extension {
     enable() {
         this._alive = true;
@@ -38,6 +47,10 @@ export default class GlasslightExtension extends Extension {
         this._clipboardCancel = null;
         this._clipboardMessage = '';
         this._clipboardCleared = false;
+        this._previewReadId = 0;
+        this._previewCancel = null;
+        this._previewItem = null;
+        this._previewOpen = false;
         this._mode = 'all';
         this._appCategory = 'all';
         this._appNavigating = false;
@@ -111,6 +124,9 @@ export default class GlasslightExtension extends Extension {
     disable() {
         this._alive = false;
         this._generation++;
+        this._previewCancel?.cancel();
+        this._previewCancel = null;
+        this._previewOpen = false;
         this._cancelClipboardRead();
         this._cancelActionSession();
         for (const source of this._scheduledActions?.values() ?? []) GLib.source_remove(source);
@@ -248,6 +264,19 @@ export default class GlasslightExtension extends Extension {
         }
         this._group.add_child(this._modeBar);
         this._overlay.add_child(this._group);
+        // Quick Look-style preview: a dimmed layer over the active monitor with a
+        // centered card. Sits above the launcher so it captures pointer and can be
+        // dismissed by clicking outside the card.
+        this._preview = new St.Widget({style_class: 'glasslight-preview-layer', visible: false,
+            reactive: true, layout_manager: new Clutter.BinLayout()});
+        this._previewCard = new St.BoxLayout({vertical: true, style_class: 'glasslight-preview-card',
+            x_align: Clutter.ActorAlign.CENTER, y_align: Clutter.ActorAlign.CENTER});
+        this._preview.add_child(this._previewCard);
+        this._preview.connect('button-press-event', () => {
+            this._closePreview();
+            return Clutter.EVENT_STOP;
+        });
+        this._overlay.add_child(this._preview);
         Main.layoutManager.addTopChrome(this._overlay);
         this._entry.clutter_text.connect('text-changed', () => {
             this._appNavigating = false;
@@ -598,6 +627,10 @@ export default class GlasslightExtension extends Extension {
         const monitor = Main.layoutManager.monitors[this._monitorIndex] ?? Main.layoutManager.primaryMonitor;
         if (!monitor) return;
         this._overlay.set_size(global.stage.width, global.stage.height);
+        if (this._previewOpen) {
+            this._preview.set_position(monitor.x, monitor.y);
+            this._preview.set_size(monitor.width, monitor.height);
+        }
         const expandedWidth = Math.max(300, Math.min(708, monitor.width / scale - 48));
         const modeWidth = 4 * 56 + 3 * 10;
         const compactWidth = Math.max(260, Math.min(440, expandedWidth - modeWidth - 14));
@@ -671,6 +704,7 @@ export default class GlasslightExtension extends Extension {
     }
 
     _hide(immediate = false) {
+        this._closePreview();
         if (this._searchTimer) GLib.source_remove(this._searchTimer);
         this._searchTimer = 0;
         this._hideScrollIndicator();
@@ -811,6 +845,26 @@ export default class GlasslightExtension extends Extension {
     _key(event) {
         const key = event.get_key_symbol();
         const state = event.get_state();
+        // While a preview is open, keys drive the preview, not the search entry.
+        if (this._previewOpen) {
+            if (key === Clutter.KEY_Escape || key === Clutter.KEY_space || key === Clutter.KEY_KP_Space) {
+                this._closePreview();
+                return Clutter.EVENT_STOP;
+            }
+            if (key === Clutter.KEY_Down || key === Clutter.KEY_Up) {
+                this._select(this._selected + (key === Clutter.KEY_Up ? -1 : 1));
+                this._openPreview(this._rows[this._selected]?.item);
+                return Clutter.EVENT_STOP;
+            }
+            if (key === Clutter.KEY_Return || key === Clutter.KEY_KP_Enter) {
+                const button = this._rows[this._selected]?.button;
+                this._closePreview();
+                button?.emit('clicked', 1);
+                return Clutter.EVENT_STOP;
+            }
+            this._closePreview();
+            return Clutter.EVENT_STOP;
+        }
         if ((key === Clutter.KEY_Return || key === Clutter.KEY_KP_Enter) && this._searchTimer &&
             global.stage.get_key_focus() === this._entry.clutter_text) {
             GLib.source_remove(this._searchTimer);
@@ -847,6 +901,17 @@ export default class GlasslightExtension extends Extension {
                 this._setMode(ids[(ids.indexOf(this._mode) + delta + ids.length) % ids.length]);
             } else this._select(this._selected + delta);
             return Clutter.EVENT_STOP;
+        }
+        // Space previews the highlighted file or image (Quick Look). Only when the
+        // entry is focused, so typing a space still works everywhere it should and
+        // native buttons in the app grid keep their own Space activation.
+        if ((key === Clutter.KEY_space || key === Clutter.KEY_KP_Space) &&
+            global.stage.get_key_focus() === this._entry.clutter_text) {
+            const item = this._rows[this._selected]?.item;
+            if (item && (item.previewUri || item.previewBytes)) {
+                this._openPreview(item);
+                return Clutter.EVENT_STOP;
+            }
         }
         // Let a focused button handle Enter itself. Otherwise launch the selected row.
         if ((key === Clutter.KEY_Return || key === Clutter.KEY_KP_Enter) && global.stage.get_key_focus() === this._entry.clutter_text) {
@@ -904,7 +969,8 @@ export default class GlasslightExtension extends Extension {
         if (all || this._mode === 'files') for (const file of this._files) {
             const rank = Math.max(score(query, file.name), score(query, file.directory) * 0.3);
             if (rank) result.push({rank, modified: file.modified, title: file.name, detail: file.directory,
-                gicon: file.gicon, activate: () => this._uri(file.uri)});
+                gicon: file.gicon, previewUri: file.uri, previewGicon: file.gicon,
+                activate: () => this._uri(file.uri)});
         }
         const actions = this._actions();
         const quick = quickAction(this._entry.get_text(), actions);
@@ -921,7 +987,7 @@ export default class GlasslightExtension extends Extension {
             if (rank) result.push(clip.kind === 'image'
                 ? {rank, title: clip.filename ?? _('Image'), detail: format(_('%s · %d KB · %s'), clip.mime.slice(6).toUpperCase(), Math.ceil(clip.size / 1024), clip.clipboardMime ? _('Enter — copy file list') : _('Enter — copy')),
                     thumbnail: clip.thumbnail, thumbnailWidth: clip.thumbnailWidth, thumbnailHeight: clip.thumbnailHeight,
-                    fallback: 'image-x-generic-symbolic',
+                    fallback: 'image-x-generic-symbolic', previewBytes: clip.bytes, previewMime: clip.mime,
                     activate: () => St.Clipboard.get_default().set_content(St.ClipboardType.CLIPBOARD,
                         clip.clipboardMime ?? clip.mime, clip.clipboardBytes ?? clip.bytes)}
                 : {rank, title: clip.text.replace(/\s+/g, ' ').slice(0, 200), detail: _('Enter — copy'),
@@ -1165,7 +1231,7 @@ export default class GlasslightExtension extends Extension {
                     : format(_('%d of %d     ↵  continue     esc  cancel'), this._actionSession.index + 1, this._actionSession.action.params.length))
                 : this._mode === 'clipboard'
                 ? (this._clipboardMessage || (this._settings.get_boolean('remember-clipboard') ? _('History in memory only · up to 20 entries / 32 MiB') : _('Text and images · enable history in preferences')))
-                : this._mode === 'files' ? format(ngettext('%d file', '%d files', this._files.length), this._files.length) + (this._indexing ? _(' · indexing…') : '') : _('↑ ↓  select     ↵  open     esc  close');
+                : this._mode === 'files' ? format(ngettext('%d file', '%d files', this._files.length), this._files.length) + (this._indexing ? _(' · indexing…') : '') : _('↑ ↓  select     space  preview     ↵  open     esc  close');
         }
         this._mainSurface.configure(expanded ? 22 : 30, this._settings.get_int('blur-radius'));
         this._select(0, false);
@@ -1204,6 +1270,221 @@ export default class GlasslightExtension extends Extension {
         this._clipboardCancel = null;
     }
 
+    // Upload decoded pixels into a GPU-backed St.ImageContent. Shared by the
+    // clipboard thumbnails and the full-size preview panel.
+    _imageContent(pixbuf) {
+        const content = new St.ImageContent({preferred_width: pixbuf.width, preferred_height: pixbuf.height});
+        content.set_data(global.stage.context.get_backend().get_cogl_context(),
+            pixbuf.get_pixels(), pixbuf.has_alpha ? Cogl.PixelFormat.RGBA_8888 : Cogl.PixelFormat.RGB_888,
+            pixbuf.width, pixbuf.height, pixbuf.rowstride);
+        return content;
+    }
+
+    // Largest preview image, in logical pixels, that fits the active monitor.
+    _previewBounds() {
+        const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        const monitor = Main.layoutManager.monitors[this._monitorIndex] ?? Main.layoutManager.primaryMonitor;
+        const width = monitor ? Math.min(760, Math.round((monitor.width / scale) * 0.6)) : 760;
+        const height = monitor ? Math.min(560, Math.round((monitor.height / scale) * 0.6)) : 560;
+        return [Math.max(1, width), Math.max(1, height)];
+    }
+
+    _decodeBytes(bytes, cancel) {
+        if (bytes.get_size() > MAX_IMAGE_BYTES)
+            return Promise.reject(new Error(_('Image larger than 16 MiB — preview not loaded')));
+        const [width, height] = this._previewBounds();
+        const input = Gio.MemoryInputStream.new_from_bytes(bytes);
+        return new Promise((resolve, reject) => GdkPixbuf.Pixbuf.new_from_stream_at_scale_async(
+            input, width, height, true, cancel, (_source, result) => {
+                try { resolve(GdkPixbuf.Pixbuf.new_from_stream_finish(result)); }
+                catch (error) { reject(error); }
+                finally { input.close(null); }
+            }));
+    }
+
+    _decodeFile(file, cancel) {
+        const [width, height] = this._previewBounds();
+        return new Promise((resolve, reject) => file.read_async(GLib.PRIORITY_DEFAULT, cancel, (_source, result) => {
+            let input;
+            try { input = file.read_finish(result); } catch (error) { reject(error); return; }
+            GdkPixbuf.Pixbuf.new_from_stream_at_scale_async(input, width, height, true, cancel, (_s, res) => {
+                try { resolve(GdkPixbuf.Pixbuf.new_from_stream_finish(res)); }
+                catch (error) { reject(error); }
+                finally { input.close(null); }
+            });
+        }));
+    }
+
+    _formatBytes(size) {
+        const units = ['B', 'KB', 'MB', 'GB'];
+        let value = size;
+        let unit = 0;
+        while (value >= 1024 && unit < units.length - 1) { value /= 1024; unit++; }
+        return `${unit ? value.toFixed(1) : value} ${units[unit]}`;
+    }
+
+    _isTextFile(type, name) {
+        if (type.startsWith('text/')) return true;
+        if (['application/json', 'application/xml', 'application/javascript', 'application/x-sh',
+            'application/x-shellscript', 'application/x-yaml', 'application/toml',
+            'application/x-desktop'].includes(type)) return true;
+        const lower = name.toLowerCase();
+        return TEXT_PREVIEW_EXTENSIONS.some(ext => lower.endsWith(ext));
+    }
+
+    // Read only the leading bytes of a text file, then clamp to a preview-sized
+    // block of lines and characters. Never loads the whole file.
+    _readTextHead(file, max, cancel) {
+        return new Promise((resolve, reject) => file.read_async(GLib.PRIORITY_DEFAULT, cancel, (_source, result) => {
+            let stream;
+            try { stream = file.read_finish(result); } catch (error) { reject(error); return; }
+            stream.read_bytes_async(max, GLib.PRIORITY_DEFAULT, cancel, (_s, res) => {
+                let bytes;
+                try { bytes = stream.read_bytes_finish(res); }
+                catch (error) { stream.close_async(GLib.PRIORITY_DEFAULT, null, () => {}); reject(error); return; }
+                stream.close_async(GLib.PRIORITY_DEFAULT, null, () => {});
+                const raw = new TextDecoder('utf-8', {fatal: false}).decode(bytes.toArray());
+                const lines = raw.split('\n');
+                let text = lines.slice(0, MAX_PREVIEW_TEXT_LINES).join('\n');
+                const truncated = lines.length > MAX_PREVIEW_TEXT_LINES || text.length > MAX_PREVIEW_TEXT_CHARS;
+                text = text.slice(0, MAX_PREVIEW_TEXT_CHARS).replace(/\s+$/, '');
+                resolve(truncated ? `${text}\n…` : text);
+            });
+        }));
+    }
+
+    // Render the first PDF page and return it as a GdkPixbuf. Poppler is imported
+    // lazily so a system without the typelib simply falls back to the icon preview.
+    // GJS cairo cannot hand back raw surface pixels, so the rendered page is
+    // round-tripped through a short-lived temporary PNG.
+    async _renderPdf(file, cancel) {
+        const Poppler = (await import('gi://Poppler')).default;
+        if (cancel.is_cancelled()) return null;
+        const doc = Poppler.Document.new_from_gfile(file, null, cancel);
+        const page = doc.get_page(0);
+        if (!page) throw new Error(_('The document has no pages'));
+        const [pageWidth, pageHeight] = page.get_size();
+        const [maxWidth, maxHeight] = this._previewBounds();
+        const scale = Math.max(0.1, Math.min(maxWidth / pageWidth, maxHeight / pageHeight));
+        const width = Math.max(1, Math.round(pageWidth * scale));
+        const height = Math.max(1, Math.round(pageHeight * scale));
+        const surface = new Cairo.ImageSurface(Cairo.Format.ARGB32, width, height);
+        const context = new Cairo.Context(surface);
+        context.scale(scale, scale);
+        context.setSourceRGBA(1, 1, 1, 1);
+        context.paint();
+        page.render(context);
+        surface.flush();
+        const [tmp, stream] = Gio.File.new_tmp('glasslight-preview-XXXXXX.png');
+        stream.close(null);
+        try {
+            surface.writeToPNG(tmp.get_path());
+            if (cancel.is_cancelled()) return null;
+            return await this._decodeFile(tmp, cancel);
+        } finally {
+            tmp.delete_async(GLib.PRIORITY_DEFAULT, null, () => {});
+        }
+    }
+
+    // Quick Look-style preview for the highlighted file or clipboard image.
+    // Clipboard images decode from their in-memory bytes; files are inspected and
+    // decoded straight from disk when they are a not-too-large image, otherwise
+    // shown as their themed icon with type and size metadata.
+    _openPreview(item) {
+        if (!item || !(item.previewUri || item.previewBytes)) { this._closePreview(); return; }
+        this._previewCancel?.cancel();
+        const cancel = new Gio.Cancellable();
+        this._previewCancel = cancel;
+        const request = ++this._previewReadId;
+        const generation = this._generation;
+        const current = () => this._alive && generation === this._generation &&
+            request === this._previewReadId && !cancel.is_cancelled();
+        this._previewItem = item;
+        this._previewOpen = true;
+        this._previewCard.destroy_all_children();
+        const media = new St.Bin({style_class: 'glasslight-preview-media',
+            x_align: Clutter.ActorAlign.CENTER, y_align: Clutter.ActorAlign.CENTER});
+        this._previewCard.add_child(media);
+        const title = label(item.title ?? '', 'glasslight-preview-title');
+        title.x_align = Clutter.ActorAlign.CENTER;
+        title.clutter_text.ellipsize = Pango.EllipsizeMode.MIDDLE;
+        this._previewCard.add_child(title);
+        const caption = label(item.detail ?? '', 'glasslight-preview-caption');
+        caption.x_align = Clutter.ActorAlign.CENTER;
+        caption.clutter_text.ellipsize = Pango.EllipsizeMode.MIDDLE;
+        this._previewCard.add_child(caption);
+        const hint = label(_('Space or Esc to close'), 'glasslight-preview-hint');
+        hint.x_align = Clutter.ActorAlign.CENTER;
+        this._previewCard.add_child(hint);
+        this._preview.show();
+        this._position();
+        const showIcon = gicon => media.set_child(new St.Icon({icon_size: 128, style_class: 'glasslight-preview-icon',
+            gicon: gicon ?? new Gio.ThemedIcon({name: item.fallback ?? 'text-x-generic-symbolic'})}));
+        const showImage = pixbuf => {
+            media.set_child(new St.Widget({content: this._imageContent(pixbuf),
+                x_align: Clutter.ActorAlign.CENTER, y_align: Clutter.ActorAlign.CENTER,
+                style: `width: ${pixbuf.width}px; height: ${pixbuf.height}px;`}));
+            this._position();
+        };
+        const showText = text => {
+            const body = new St.Label({text: text || _('Empty file'), style_class: 'glasslight-preview-text-body'});
+            // CSV/JSON rows have few spaces, so word wrap alone can't break them and
+            // the line overflows the card. WORD_CHAR falls back to breaking mid-token.
+            body.clutter_text.line_wrap = true;
+            body.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
+            body.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            media.set_child(new St.Bin({style_class: 'glasslight-preview-text', child: body}));
+            this._position();
+        };
+        showIcon(item.previewGicon);
+        if (item.previewBytes) {
+            this._decodeBytes(item.previewBytes, cancel)
+                .then(pixbuf => { if (current()) showImage(pixbuf); })
+                .catch(error => { if (current()) caption.text = format(_('Preview unavailable: %s'), error.message); });
+            return;
+        }
+        const file = Gio.File.new_for_uri(item.previewUri);
+        file.query_info_async('standard::content-type,standard::size,standard::icon',
+            Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_DEFAULT, cancel, (_source, result) => {
+                let info;
+                try { info = file.query_info_finish(result); }
+                catch (error) { if (current()) caption.text = format(_('Preview unavailable: %s'), error.message); return; }
+                if (!current()) return;
+                const type = info.get_content_type() ?? '';
+                const name = item.title ?? '';
+                const size = info.get_size();
+                caption.text = [item.detail, type, this._formatBytes(size)].filter(Boolean).join(' · ');
+                showIcon(info.get_icon() ?? item.previewGicon);
+                // The icon stays as the fallback; each renderer replaces it on success
+                // and quietly leaves it in place on any failure.
+                if (type.startsWith('image/') && size > 0 && size <= MAX_IMAGE_BYTES) {
+                    this._decodeFile(file, cancel)
+                        .then(pixbuf => { if (current()) showImage(pixbuf); })
+                        .catch(() => {});
+                } else if (type === 'application/pdf' || name.toLowerCase().endsWith('.pdf')) {
+                    this._renderPdf(file, cancel)
+                        .then(pixbuf => { if (current() && pixbuf) showImage(pixbuf); })
+                        .catch(() => {});
+                } else if (this._isTextFile(type, name)) {
+                    this._readTextHead(file, MAX_PREVIEW_TEXT_BYTES, cancel)
+                        .then(text => { if (current()) showText(text); })
+                        .catch(() => {});
+                }
+            });
+    }
+
+    _closePreview() {
+        this._previewReadId++;
+        this._previewCancel?.cancel();
+        this._previewCancel = null;
+        this._previewItem = null;
+        if (!this._previewOpen) return;
+        this._previewOpen = false;
+        this._preview?.hide();
+        this._previewCard?.destroy_all_children();
+        if (this._overlay?.visible) this._entry.clutter_text.grab_key_focus();
+    }
+
     async _imageClip(bytes, mime, cancel) {
         if (!bytes.get_size()) throw new Error(_('The clipboard returned an empty image'));
         if (bytes.get_size() > MAX_IMAGE_BYTES) throw new Error(_('Image larger than 16 MiB — preview not loaded'));
@@ -1214,10 +1495,7 @@ export default class GlasslightExtension extends Extension {
                     try {resolve(GdkPixbuf.Pixbuf.new_from_stream_finish(result));} catch (e) {reject(e);}
                 }));
             if (cancel.is_cancelled()) throw new Error(_('Read cancelled'));
-            const thumbnail = new St.ImageContent({preferred_width: pixbuf.width, preferred_height: pixbuf.height});
-            thumbnail.set_data(global.stage.context.get_backend().get_cogl_context(),
-                pixbuf.get_pixels(), pixbuf.has_alpha ? Cogl.PixelFormat.RGBA_8888 : Cogl.PixelFormat.RGB_888,
-                pixbuf.width, pixbuf.height, pixbuf.rowstride);
+            const thumbnail = this._imageContent(pixbuf);
             return {kind: 'image', mime, bytes, size: bytes.get_size(),
                 id: `${mime}:${GLib.compute_checksum_for_bytes(GLib.ChecksumType.SHA256, bytes)}`,
                 thumbnailWidth: Math.max(1, Math.round(pixbuf.width / 2)),

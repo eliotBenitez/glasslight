@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="icon.png" alt="Glasslight icon" width="128" height="128">
+
 # Glasslight
 
 ### A fast, keyboard-first launcher with native glass for GNOME Shell 50
@@ -71,6 +73,7 @@ Just start typing to search everywhere, then use the keyboard for the rest:
 | `←` / `→` | Navigate the application grid |
 | `Alt+←` / `Alt+→` | Change application category |
 | `Tab` / `Shift+Tab` | Move between controls |
+| `Space` | Preview the selected file or image |
 | `Enter` | Open, run, or copy the selection |
 | `Esc` | Cancel the action or close Glasslight |
 

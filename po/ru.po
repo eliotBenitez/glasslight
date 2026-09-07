@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Glasslight\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-05 23:29+0300\n"
+"POT-Creation-Date: 2026-09-07 01:03+0300\n"
 "PO-Revision-Date: 2026-09-05 23:29+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -522,60 +522,60 @@ msgstr "Изображение больше 16 МиБ"
 msgid "Unsupported image format"
 msgstr "Неподдерживаемый формат изображения"
 
-#: extension.js:165
+#: extension.js:181
 msgid "Back to Glasslight"
 msgstr "Назад к Glasslight"
 
-#: extension.js:177 extension.js:576
+#: extension.js:193 extension.js:605
 msgid "Glasslight Search"
 msgstr "Поиск Glasslight"
 
-#: extension.js:190
+#: extension.js:206
 msgid "Clear"
 msgstr "Очистить"
 
-#: extension.js:295
+#: extension.js:324
 msgid "Previous category (Alt+←)"
 msgstr "Предыдущая категория (Alt+←)"
 
-#: extension.js:296
+#: extension.js:325
 msgid "Next category (Alt+→)"
 msgstr "Следующая категория (Alt+→)"
 
-#: extension.js:304 extension.js:311
+#: extension.js:333 extension.js:340
 msgid "Catalogue view"
 msgstr "Вид каталога"
 
-#: extension.js:313
+#: extension.js:342
 msgid "Grid"
 msgstr "Сетка"
 
-#: extension.js:313
+#: extension.js:342
 msgid "List"
 msgstr "Список"
 
-#: extension.js:384
+#: extension.js:413
 msgid "Suggested"
 msgstr "Рекомендуемые"
 
-#: extension.js:385
+#: extension.js:414
 #, javascript-format
 msgid "Results · %d"
 msgstr "Результаты · %d"
 
-#: extension.js:386
+#: extension.js:415
 msgid "All applications"
 msgstr "Все приложения"
 
-#: extension.js:388
+#: extension.js:417
 msgid "No applications found in this category"
 msgstr "Приложения не найдены в этой категории"
 
-#: extension.js:388
+#: extension.js:417
 msgid "No applications available"
 msgstr "Нет доступных приложений"
 
-#: extension.js:389
+#: extension.js:418
 #, javascript-format
 msgid "%d app"
 msgid_plural "%d apps"
@@ -583,94 +583,94 @@ msgstr[0] "%d приложение"
 msgstr[1] "%d приложения"
 msgstr[2] "%d приложений"
 
-#: extension.js:390
+#: extension.js:419
 #, javascript-format
 msgid "%s  ·  ↑ ↓ ← → select  ·  ↵ open  ·  Alt+←/→ categories"
 msgstr "%s  ·  ↑ ↓ ← → выбрать  ·  ↵ открыть  ·  Alt+←/→ категории"
 
-#: extension.js:893
+#: extension.js:958
 #, javascript-format
 msgid "%s · Enter — copy"
 msgstr "%s · Enter — скопировать"
 
-#: extension.js:901
+#: extension.js:966
 msgid "Application"
 msgstr "Приложение"
 
-#: extension.js:913
+#: extension.js:979
 #, javascript-format
 msgid "Quick Key · %s"
 msgstr "Быстрая клавиша · %s"
 
-#: extension.js:920
+#: extension.js:986
 msgid "image picture screenshot"
 msgstr "изображение картинка снимок image screenshot"
 
-#: extension.js:922
+#: extension.js:988
 msgid "Image"
 msgstr "Изображение"
 
-#: extension.js:922
+#: extension.js:988
 #, javascript-format
 msgid "%s · %d KB · %s"
 msgstr "%s · %d КБ · %s"
 
-#: extension.js:922
+#: extension.js:988
 msgid "Enter — copy file list"
 msgstr "Enter — скопировать список файлов"
 
-#: extension.js:922 extension.js:927 extension.js:1076
+#: extension.js:988 extension.js:993 extension.js:1142
 msgid "Enter — copy"
 msgstr "Enter — скопировать"
 
-#: extension.js:932
+#: extension.js:998
 #, javascript-format
 msgid "Search the web for «%s»"
 msgstr "Найти «%s» в интернете"
 
-#: extension.js:932
+#: extension.js:998
 msgid "DuckDuckGo · default browser"
 msgstr "DuckDuckGo · браузер по умолчанию"
 
-#: extension.js:959
+#: extension.js:1025
 #, javascript-format
 msgid "Continue with «%s»"
 msgstr "Продолжить с «%s»"
 
-#: extension.js:1077
+#: extension.js:1143
 msgid "Result"
 msgstr "Результат"
 
-#: extension.js:1133
+#: extension.js:1199
 msgid "Best matches"
 msgstr "Лучшие совпадения"
 
-#: extension.js:1162
+#: extension.js:1228
 msgid "No supported text or image in the clipboard"
 msgstr "В буфере нет поддерживаемого текста или изображения"
 
-#: extension.js:1162
+#: extension.js:1228
 msgid "No matches found"
 msgstr "Совпадений не найдено"
 
-#: extension.js:1164
+#: extension.js:1230
 msgid "↵  copy     esc  back to actions"
 msgstr "↵  скопировать     esc  вернуться к действиям"
 
-#: extension.js:1165
+#: extension.js:1231
 #, javascript-format
 msgid "%d of %d     ↵  continue     esc  cancel"
 msgstr "%d из %d     ↵  продолжить     esc  отменить"
 
-#: extension.js:1167
+#: extension.js:1233
 msgid "History in memory only · up to 20 entries / 32 MiB"
 msgstr "История только в памяти · до 20 записей / 32 МиБ"
 
-#: extension.js:1167
+#: extension.js:1233
 msgid "Text and images · enable history in preferences"
 msgstr "Текст и изображения · историю можно включить в настройках"
 
-#: extension.js:1168
+#: extension.js:1234
 #, javascript-format
 msgid "%d file"
 msgid_plural "%d files"
@@ -678,55 +678,67 @@ msgstr[0] "%d файл"
 msgstr[1] "%d файла"
 msgstr[2] "%d файлов"
 
-#: extension.js:1168
+#: extension.js:1234
 msgid " · indexing…"
 msgstr " · индексирование…"
 
-#: extension.js:1168
-msgid "↑ ↓  select     ↵  open     esc  close"
-msgstr "↑ ↓  выбрать     ↵  открыть     esc  закрыть"
+#: extension.js:1234
+msgid "↑ ↓  select     space  preview     ↵  open     esc  close"
+msgstr "↑ ↓  выбрать     space  превью     ↵  открыть     esc  закрыть"
 
-#: extension.js:1208
-msgid "The clipboard returned an empty image"
-msgstr "Буфер обмена вернул пустое изображение"
-
-#: extension.js:1209
+#: extension.js:1294 extension.js:1484
 msgid "Image larger than 16 MiB — preview not loaded"
 msgstr "Изображение больше 16 МиБ — превью не загружено"
 
-#: extension.js:1216
+#: extension.js:1363
+msgid "The document has no pages"
+msgstr "В документе нет страниц"
+
+#: extension.js:1406
+msgid "Space or Esc to close"
+msgstr "Space или Esc — закрыть"
+
+#: extension.js:1428
+msgid "Empty file"
+msgstr "Пустой файл"
+
+#: extension.js:1437 extension.js:1445 extension.js:1598
+#, javascript-format
+msgid "Preview unavailable: %s"
+msgstr "Превью недоступно: %s"
+
+#: extension.js:1483
+msgid "The clipboard returned an empty image"
+msgstr "Буфер обмена вернул пустое изображение"
+
+#: extension.js:1491
 msgid "Read cancelled"
 msgstr "Чтение отменено"
 
-#: extension.js:1253
+#: extension.js:1525
 msgid "Loading thumbnail…"
 msgstr "Загрузка миниатюры…"
 
-#: extension.js:1265
+#: extension.js:1537
 msgid "Loading file thumbnails…"
 msgstr "Загрузка миниатюр файлов…"
 
-#: extension.js:1280
+#: extension.js:1552
 msgid "Some thumbnails skipped: 32 MiB limit"
 msgstr "Часть миниатюр пропущена: лимит 32 МиБ"
 
-#: extension.js:1294
+#: extension.js:1566
 #, javascript-format
 msgid "Some files are unavailable: %s"
 msgstr "Некоторые файлы недоступны: %s"
 
-#: extension.js:1297
+#: extension.js:1569
 msgid "No supported local images in the list"
 msgstr "В списке нет поддерживаемых локальных изображений"
 
-#: extension.js:1326 extension.js:1332
+#: extension.js:1598 extension.js:1604
 msgid "Could not read the clipboard in time"
 msgstr "Не удалось прочитать буфер вовремя"
-
-#: extension.js:1326
-#, javascript-format
-msgid "Preview unavailable: %s"
-msgstr "Превью недоступно: %s"
 
 #: mpris.js:18
 msgid "No active media player found"

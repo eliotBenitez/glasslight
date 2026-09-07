@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="icon.png" alt="Иконка Glasslight" width="128" height="128">
+
 # Glasslight
 
 ### Быстрый лаунчер с нативным стеклом для GNOME Shell 50
@@ -67,6 +69,7 @@ gnome-extensions enable glasslight
 | `←` / `→` | Навигация по сетке приложений |
 | `Alt+←` / `Alt+→` | Сменить категорию приложений |
 | `Tab` / `Shift+Tab` | Переход между элементами |
+| `Space` | Превью выбранного файла или изображения |
 | `Enter` | Открыть, выполнить или скопировать |
 | `Esc` | Отменить действие или закрыть Glasslight |
 
