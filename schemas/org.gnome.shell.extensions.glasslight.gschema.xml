@@ -20,6 +20,25 @@
       <default>true</default>
       <summary>Keep up to 20 text and image clipboard entries in memory</summary>
     </key>
+    <key name="search-engine" type="s">
+      <choices>
+        <choice value="duckduckgo"/><choice value="google"/><choice value="bing"/><choice value="yandex"/>
+        <choice value="brave"/><choice value="startpage"/><choice value="ecosia"/><choice value="custom"/>
+      </choices>
+      <default>'duckduckgo'</default>
+      <summary>Web search engine</summary>
+      <description>The engine opened when the web search result is activated.</description>
+    </key>
+    <key name="custom-search-url" type="s">
+      <default>''</default>
+      <summary>Custom web search URL</summary>
+      <description>An http or https URL where %s is replaced by the query. Used when search-engine is custom.</description>
+    </key>
+    <key name="replace-app-grid" type="b">
+      <default>false</default>
+      <summary>Replace the GNOME app grid</summary>
+      <description>Open the Glasslight application catalogue instead of the GNOME Shell app grid from Super+A, the Show Apps button and a second Super press.</description>
+    </key>
     <key name="toggle-glasslight" type="as">
       <default>['&lt;Alt&gt;space']</default>
       <summary>Toggle Glasslight</summary>

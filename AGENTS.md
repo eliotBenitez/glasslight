@@ -11,7 +11,8 @@ The extension UUID is `glasslight`. Preserve it in `metadata.json`, schema paths
 - `extension.js` is the integration layer. It owns enable/disable lifecycle, actors, input handling, result rendering, file indexing, clipboard history, and activation.
 - `glass.js` implements the masked native `Shell.BlurEffect` surface and tracks scene changes. Keep GPU-effect and background-sampling logic here.
 - `actions.js`, `actionUtils.js`, `mpris.js`, and `random.js` define built-in actions, input parsing, media control, and secure random generation.
-- `appCatalog.js`, `search.js`, and `calculator.js` contain focused ranking, normalization, and expression-evaluation logic. Prefer small, side-effect-free helpers in these files.
+- `appCatalog.js`, `search.js`, `calculator.js`, and `searchEngines.js` contain focused ranking, normalization, expression-evaluation, and web-search URL logic. Prefer small, side-effect-free helpers in these files.
+- `settingsSearch.js` builds zero-parameter actions from installed GNOME Settings panel desktop entries, including `NoDisplay` entries. Use their localized metadata and launch the original entry to preserve nested panel destinations. These actions appear in global search and Actions, refresh with the app catalogue, and are cleared on disable.
 - `clipboardFiles.js` validates clipboard MIME types and reads local image/file data with byte limits and cancellation.
 - `widgets.js` contains reusable actor factories; `constants.js` contains shared modes, limits, grid dimensions, and motion timings.
 - `prefs.js` builds the Libadwaita preferences UI. `stylesheet.css` contains all Shell theme rules.
@@ -105,7 +106,7 @@ Search for the `[Glasslight]` prefix. Include relevant errors in bug reports, bu
 
 ## Security, Privacy & Resource Limits
 
-Preserve the project’s local-first behavior. Clipboard history stays in memory, remote image URLs are not downloaded, and search text is not sent while typing. The DuckDuckGo query is opened only when the user activates its result. Keep existing image and clipboard byte limits, file-index bounds, cancellation, and `/dev/urandom`-backed password generation intact. Any change that adds persistence, network access, subprocesses, or broader filesystem traversal must be documented prominently in both the PR and `README.md`.
+Preserve the project’s local-first behavior. Clipboard history stays in memory, remote image URLs are not downloaded, and search text is not sent while typing. The web search query (DuckDuckGo by default, configurable in preferences) is opened only when the user activates its result. Keep existing image and clipboard byte limits, file-index bounds, cancellation, and `/dev/urandom`-backed password generation intact. Any change that adds persistence, network access, subprocesses, or broader filesystem traversal must be documented prominently in both the PR and `README.md`.
 
 ## Commit & Pull Request Guidelines
 

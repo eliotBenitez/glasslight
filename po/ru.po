@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Glasslight\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-07 01:03+0300\n"
+"POT-Creation-Date: 2026-09-17 18:50+0300\n"
 "PO-Revision-Date: 2026-09-05 23:29+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -15,6 +15,65 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: actionUtils.js:5
+#, javascript-format
+msgid "%s: enter an integer"
+msgstr "%s: введите целое число"
+
+#: actionUtils.js:8
+#, javascript-format
+msgid "%s: allowed from %d to %d"
+msgstr "%s: допустимо от %d до %d"
+
+#: actionUtils.js:14
+msgid "Enter a timer duration"
+msgstr "Введите длительность таймера"
+
+#: actionUtils.js:30
+#, javascript-format
+msgid "Unknown unit «%s»"
+msgstr "Неизвестная единица «%s»"
+
+#: actionUtils.js:36
+msgid "Duration example: 10 min, 1h 30m or 05:00"
+msgstr "Пример длительности: 10 мин, 1h 30m или 05:00"
+
+#: actionUtils.js:40
+msgid "A timer can last from 1 second to 7 days"
+msgstr "Таймер может длиться от 1 секунды до 7 дней"
+
+#: actionUtils.js:50
+#, javascript-format
+msgid "%d d"
+msgstr "%d д"
+
+#: actionUtils.js:51
+#, javascript-format
+msgid "%d h"
+msgstr "%d ч"
+
+#: actionUtils.js:52
+#, javascript-format
+msgid "%d min"
+msgstr "%d мин"
+
+#: actionUtils.js:53
+#, javascript-format
+msgid "%d sec"
+msgstr "%d сек"
+
+#: actionUtils.js:59
+msgid "Enter a time as HH:MM"
+msgstr "Введите время в формате ЧЧ:ММ"
+
+#: actionUtils.js:62
+msgid "Invalid alarm time"
+msgstr "Некорректное время будильника"
+
+#: actionUtils.js:75
+msgid "Unknown case variant"
+msgstr "Неизвестный вариант регистра"
 
 #: actions.js:33
 msgid "Random number"
@@ -447,65 +506,6 @@ msgstr "lock screen блокировать экран"
 msgid "Lock the current session"
 msgstr "Заблокировать текущий сеанс"
 
-#: actionUtils.js:5
-#, javascript-format
-msgid "%s: enter an integer"
-msgstr "%s: введите целое число"
-
-#: actionUtils.js:8
-#, javascript-format
-msgid "%s: allowed from %d to %d"
-msgstr "%s: допустимо от %d до %d"
-
-#: actionUtils.js:14
-msgid "Enter a timer duration"
-msgstr "Введите длительность таймера"
-
-#: actionUtils.js:30
-#, javascript-format
-msgid "Unknown unit «%s»"
-msgstr "Неизвестная единица «%s»"
-
-#: actionUtils.js:36
-msgid "Duration example: 10 min, 1h 30m or 05:00"
-msgstr "Пример длительности: 10 мин, 1h 30m или 05:00"
-
-#: actionUtils.js:40
-msgid "A timer can last from 1 second to 7 days"
-msgstr "Таймер может длиться от 1 секунды до 7 дней"
-
-#: actionUtils.js:50
-#, javascript-format
-msgid "%d d"
-msgstr "%d д"
-
-#: actionUtils.js:51
-#, javascript-format
-msgid "%d h"
-msgstr "%d ч"
-
-#: actionUtils.js:52
-#, javascript-format
-msgid "%d min"
-msgstr "%d мин"
-
-#: actionUtils.js:53
-#, javascript-format
-msgid "%d sec"
-msgstr "%d сек"
-
-#: actionUtils.js:59
-msgid "Enter a time as HH:MM"
-msgstr "Введите время в формате ЧЧ:ММ"
-
-#: actionUtils.js:62
-msgid "Invalid alarm time"
-msgstr "Некорректное время будильника"
-
-#: actionUtils.js:75
-msgid "Unknown case variant"
-msgstr "Неизвестный вариант регистра"
-
 #: clipboardFiles.js:41
 msgid "The clipboard file list is too large"
 msgstr "Список файлов в буфере слишком большой"
@@ -522,60 +522,60 @@ msgstr "Изображение больше 16 МиБ"
 msgid "Unsupported image format"
 msgstr "Неподдерживаемый формат изображения"
 
-#: extension.js:181
+#: extension.js:247
 msgid "Back to Glasslight"
 msgstr "Назад к Glasslight"
 
-#: extension.js:193 extension.js:605
+#: extension.js:259 extension.js:671
 msgid "Glasslight Search"
 msgstr "Поиск Glasslight"
 
-#: extension.js:206
+#: extension.js:272
 msgid "Clear"
 msgstr "Очистить"
 
-#: extension.js:324
+#: extension.js:390
 msgid "Previous category (Alt+←)"
 msgstr "Предыдущая категория (Alt+←)"
 
-#: extension.js:325
+#: extension.js:391
 msgid "Next category (Alt+→)"
 msgstr "Следующая категория (Alt+→)"
 
-#: extension.js:333 extension.js:340
+#: extension.js:399 extension.js:406
 msgid "Catalogue view"
 msgstr "Вид каталога"
 
-#: extension.js:342
+#: extension.js:408
 msgid "Grid"
 msgstr "Сетка"
 
-#: extension.js:342
+#: extension.js:408
 msgid "List"
 msgstr "Список"
 
-#: extension.js:413
+#: extension.js:479
 msgid "Suggested"
 msgstr "Рекомендуемые"
 
-#: extension.js:414
+#: extension.js:480
 #, javascript-format
 msgid "Results · %d"
 msgstr "Результаты · %d"
 
-#: extension.js:415
+#: extension.js:481
 msgid "All applications"
 msgstr "Все приложения"
 
-#: extension.js:417
+#: extension.js:483
 msgid "No applications found in this category"
 msgstr "Приложения не найдены в этой категории"
 
-#: extension.js:417
+#: extension.js:483
 msgid "No applications available"
 msgstr "Нет доступных приложений"
 
-#: extension.js:418
+#: extension.js:484
 #, javascript-format
 msgid "%d app"
 msgid_plural "%d apps"
@@ -583,94 +583,95 @@ msgstr[0] "%d приложение"
 msgstr[1] "%d приложения"
 msgstr[2] "%d приложений"
 
-#: extension.js:419
+#: extension.js:485
 #, javascript-format
 msgid "%s  ·  ↑ ↓ ← → select  ·  ↵ open  ·  Alt+←/→ categories"
 msgstr "%s  ·  ↑ ↓ ← → выбрать  ·  ↵ открыть  ·  Alt+←/→ категории"
 
-#: extension.js:958
+#: extension.js:1026
 #, javascript-format
 msgid "%s · Enter — copy"
 msgstr "%s · Enter — скопировать"
 
-#: extension.js:966
+#: extension.js:1034
 msgid "Application"
 msgstr "Приложение"
 
-#: extension.js:979
+#: extension.js:1047
 #, javascript-format
 msgid "Quick Key · %s"
 msgstr "Быстрая клавиша · %s"
 
-#: extension.js:986
+#: extension.js:1054
 msgid "image picture screenshot"
 msgstr "изображение картинка снимок image screenshot"
 
-#: extension.js:988
+#: extension.js:1056
 msgid "Image"
 msgstr "Изображение"
 
-#: extension.js:988
+#: extension.js:1056
 #, javascript-format
 msgid "%s · %d KB · %s"
 msgstr "%s · %d КБ · %s"
 
-#: extension.js:988
+#: extension.js:1056
 msgid "Enter — copy file list"
 msgstr "Enter — скопировать список файлов"
 
-#: extension.js:988 extension.js:993 extension.js:1142
+#: extension.js:1056 extension.js:1061 extension.js:1214
 msgid "Enter — copy"
 msgstr "Enter — скопировать"
 
-#: extension.js:998
+#: extension.js:1069
 #, javascript-format
 msgid "Search the web for «%s»"
 msgstr "Найти «%s» в интернете"
 
-#: extension.js:998
-msgid "DuckDuckGo · default browser"
-msgstr "DuckDuckGo · браузер по умолчанию"
+#: extension.js:1069
+#, javascript-format
+msgid "%s · default browser"
+msgstr "%s · браузер по умолчанию"
 
-#: extension.js:1025
+#: extension.js:1097
 #, javascript-format
 msgid "Continue with «%s»"
 msgstr "Продолжить с «%s»"
 
-#: extension.js:1143
+#: extension.js:1215
 msgid "Result"
 msgstr "Результат"
 
-#: extension.js:1199
+#: extension.js:1271
 msgid "Best matches"
 msgstr "Лучшие совпадения"
 
-#: extension.js:1228
+#: extension.js:1300
 msgid "No supported text or image in the clipboard"
 msgstr "В буфере нет поддерживаемого текста или изображения"
 
-#: extension.js:1228
+#: extension.js:1300
 msgid "No matches found"
 msgstr "Совпадений не найдено"
 
-#: extension.js:1230
-msgid "↵  copy     esc  back to actions"
-msgstr "↵  скопировать     esc  вернуться к действиям"
+#: extension.js:1302
+msgid "↵  copy     esc  back"
+msgstr "↵  скопировать     esc  назад"
 
-#: extension.js:1231
+#: extension.js:1303
 #, javascript-format
-msgid "%d of %d     ↵  continue     esc  cancel"
-msgstr "%d из %d     ↵  продолжить     esc  отменить"
+msgid "%d of %d     ↵  continue     esc  back"
+msgstr "%d из %d     ↵  продолжить     esc  назад"
 
-#: extension.js:1233
+#: extension.js:1305
 msgid "History in memory only · up to 20 entries / 32 MiB"
 msgstr "История только в памяти · до 20 записей / 32 МиБ"
 
-#: extension.js:1233
+#: extension.js:1305
 msgid "Text and images · enable history in preferences"
 msgstr "Текст и изображения · историю можно включить в настройках"
 
-#: extension.js:1234
+#: extension.js:1306
 #, javascript-format
 msgid "%d file"
 msgid_plural "%d files"
@@ -678,65 +679,69 @@ msgstr[0] "%d файл"
 msgstr[1] "%d файла"
 msgstr[2] "%d файлов"
 
-#: extension.js:1234
+#: extension.js:1306
 msgid " · indexing…"
 msgstr " · индексирование…"
 
-#: extension.js:1234
+#: extension.js:1307
+msgid "↑ ↓  select     ↵  open     esc  back"
+msgstr "↑ ↓  выбрать     ↵  открыть     esc  назад"
+
+#: extension.js:1308
 msgid "↑ ↓  select     space  preview     ↵  open     esc  close"
 msgstr "↑ ↓  выбрать     space  превью     ↵  открыть     esc  закрыть"
 
-#: extension.js:1294 extension.js:1484
+#: extension.js:1368 extension.js:1564
 msgid "Image larger than 16 MiB — preview not loaded"
 msgstr "Изображение больше 16 МиБ — превью не загружено"
 
-#: extension.js:1363
+#: extension.js:1439
 msgid "The document has no pages"
 msgstr "В документе нет страниц"
 
-#: extension.js:1406
+#: extension.js:1490
 msgid "Space or Esc to close"
 msgstr "Space или Esc — закрыть"
 
-#: extension.js:1428
+#: extension.js:1504
 msgid "Empty file"
 msgstr "Пустой файл"
 
-#: extension.js:1437 extension.js:1445 extension.js:1598
+#: extension.js:1517 extension.js:1525 extension.js:1678
 #, javascript-format
 msgid "Preview unavailable: %s"
 msgstr "Превью недоступно: %s"
 
-#: extension.js:1483
+#: extension.js:1563
 msgid "The clipboard returned an empty image"
 msgstr "Буфер обмена вернул пустое изображение"
 
-#: extension.js:1491
+#: extension.js:1571
 msgid "Read cancelled"
 msgstr "Чтение отменено"
 
-#: extension.js:1525
+#: extension.js:1605
 msgid "Loading thumbnail…"
 msgstr "Загрузка миниатюры…"
 
-#: extension.js:1537
+#: extension.js:1617
 msgid "Loading file thumbnails…"
 msgstr "Загрузка миниатюр файлов…"
 
-#: extension.js:1552
+#: extension.js:1632
 msgid "Some thumbnails skipped: 32 MiB limit"
 msgstr "Часть миниатюр пропущена: лимит 32 МиБ"
 
-#: extension.js:1566
+#: extension.js:1646
 #, javascript-format
 msgid "Some files are unavailable: %s"
 msgstr "Некоторые файлы недоступны: %s"
 
-#: extension.js:1569
+#: extension.js:1649
 msgid "No supported local images in the list"
 msgstr "В списке нет поддерживаемых локальных изображений"
 
-#: extension.js:1598 extension.js:1604
+#: extension.js:1678 extension.js:1684
 msgid "Could not read the clipboard in time"
 msgstr "Не удалось прочитать буфер вовремя"
 
@@ -748,53 +753,87 @@ msgstr "Активный медиаплеер не найден"
 msgid "Playback toggled"
 msgstr "Воспроизведение переключено"
 
-#: prefs.js:10
+#: prefs.js:11
 msgid "Appearance"
 msgstr "Внешний вид"
 
-#: prefs.js:12
+#: prefs.js:13
 msgid "Theme"
 msgstr "Тема"
 
-#: prefs.js:12
+#: prefs.js:13
 msgid "The system theme follows GNOME"
 msgstr "Системная тема меняется вместе с GNOME"
 
-#: prefs.js:13
+#: prefs.js:14
 msgid "Match the system"
 msgstr "Как в системе"
 
-#: prefs.js:13
+#: prefs.js:14
 msgid "Light"
 msgstr "Светлая"
 
-#: prefs.js:13
+#: prefs.js:14
 msgid "Dark"
 msgstr "Тёмная"
 
-#: prefs.js:16
+#: prefs.js:17
 msgid "Background blur"
 msgstr "Размытие фона"
 
-#: prefs.js:16
+#: prefs.js:17
 msgid "Native GNOME Shell blur"
 msgstr "Нативный blur GNOME Shell"
 
-#: prefs.js:21
+#: prefs.js:22
 msgid "Behaviour"
 msgstr "Управление"
 
-#: prefs.js:22
+#: prefs.js:23
 msgid "Clipboard history"
 msgstr "История буфера обмена"
 
-#: prefs.js:22
+#: prefs.js:23
 msgid "Text and images: up to 20 entries / 32 MiB, memory only"
 msgstr "Текст и изображения: до 20 записей / 32 МиБ, только в памяти"
 
-#: prefs.js:25
+#: prefs.js:26
+msgid "Replace the GNOME app grid"
+msgstr "Заменить сетку приложений GNOME"
+
+#: prefs.js:27
+msgid "Super+A, the Show Apps button and a second Super press open Glasslight"
+msgstr ""
+"Super+A, кнопка «Показать приложения» и повторное нажатие Super открывают "
+"Glasslight"
+
+#: prefs.js:30
 msgid "Hotkey (for example, <Alt>space)"
 msgstr "Горячая клавиша (например, <Alt>space)"
+
+#: prefs.js:42
+msgid "Web search"
+msgstr "Веб-поиск"
+
+#: prefs.js:43
+msgid ""
+"The query opens in the default browser only when you pick the web result"
+msgstr ""
+"Запрос открывается в браузере по умолчанию, только когда вы выбираете строку "
+"веб-поиска"
+
+#: prefs.js:45
+msgid "Search engine"
+msgstr "Поисковая система"
+
+#: prefs.js:46
+msgid "Custom"
+msgstr "Свой"
+
+#: prefs.js:48
+#, javascript-format
+msgid "Search URL (%s is replaced by the query)"
+msgstr "URL поиска (%s заменяется запросом)"
 
 #: random.js:12
 msgid "Could not obtain random data"

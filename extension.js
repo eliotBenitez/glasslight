@@ -10,6 +10,7 @@ import Shell from 'gi://Shell';
 import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as AppFavorites from 'resource:///org/gnome/shell/ui/appFavorites.js';
+import {ControlsState} from 'resource:///org/gnome/shell/ui/overviewControls.js';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {GlassSurface} from './glass.js';
 import {FILE_TYPES, localImageFiles, selectionBytes, localImageBytes} from './clipboardFiles.js';
@@ -21,6 +22,8 @@ import {fold, score} from './search.js';
 import {evaluateExpression, formatCalcResult} from './calculator.js';
 import {label, icon} from './widgets.js';
 import {buildActions, quickAction} from './actions.js';
+import {resolveSearchEngine, searchUrl} from './searchEngines.js';
+import {buildSettingsActions} from './settingsSearch.js';
 import {_, ngettext, format} from './i18n.js';
 
 // Text preview reads only a bounded head of the file and clamps what it shows,
@@ -71,6 +74,7 @@ export default class GlasslightExtension extends Extension {
         this._animationSerial = 0;
         this._closing = false;
         this._grab = null;
+        this._appGridReplaced = false;
         this._cancellable = new Gio.Cancellable();
         this._notifications = new Gio.Settings({schema_id: 'org.gnome.desktop.notifications'});
         this._refreshApps();
@@ -114,11 +118,73 @@ export default class GlasslightExtension extends Extension {
         this._startIndex();
         Main.wm.addKeybinding('toggle-glasslight', this._settings, Meta.KeyBindingFlags.NONE,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP,
-            () => this._overlay.visible && !this._closing ? this._hide() : this._show());
+            () => this._toggle());
+        this._connect(this._settings, 'changed::replace-app-grid', () => this._syncAppGrid());
+        this._syncAppGrid();
     }
 
     _connect(object, signal, callback) {
         this._signals.push([object, object.connect(signal, callback)]);
+    }
+
+    _toggle(mode = 'all') {
+        if (!this._overlay.visible || this._closing) this._show(mode);
+        else if (mode !== 'all' && this._mode !== mode) this._setMode(mode);
+        else this._hide();
+    }
+
+    _syncAppGrid() {
+        if (this._settings.get_boolean('replace-app-grid')) this._replaceAppGrid();
+        else this._restoreAppGrid();
+    }
+
+    // GNOME Shell 50 reaches its app grid through the Super+A keybinding, the dash
+    // Show Apps button (also driven by Ctrl+Alt+Tab), Overview.showApps() and
+    // _shiftState() for a second Super press. The button and shift handlers are
+    // looked up on the instance at call time, so own-property shadows redirect
+    // them and deleting the shadows restores the prototype methods.
+    _replaceAppGrid() {
+        const controls = Main.overview._overview?.controls;
+        if (this._appGridReplaced || !controls) return;
+        this._appGridReplaced = true;
+        const proto = Object.getPrototypeOf(controls);
+        const openApps = () => this._show('apps');
+        controls._onShowAppsButtonToggled = function () {
+            const button = this.dash.showAppsButton;
+            if (this._ignoreShowAppsButtonToggle || !button.checked) {
+                proto._onShowAppsButtonToggled.call(this);
+                return;
+            }
+            this._ignoreShowAppsButtonToggle = true;
+            button.checked = false;
+            this._ignoreShowAppsButtonToggle = false;
+            openApps();
+        };
+        controls._shiftState = function (direction) {
+            const {finalState} = this._stateAdjustment.getStateTransitionParams();
+            if (direction === Meta.MotionDirection.UP && finalState >= ControlsState.WINDOW_PICKER) openApps();
+            else proto._shiftState.call(this, direction);
+        };
+        Main.overview.showApps = openApps;
+        Main.wm.removeKeybinding('toggle-application-view');
+        Main.wm.addKeybinding('toggle-application-view', new Gio.Settings({schema_id: 'org.gnome.shell.keybindings'}),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP,
+            () => this._toggle('apps'));
+    }
+
+    _restoreAppGrid() {
+        const controls = Main.overview._overview?.controls;
+        if (!this._appGridReplaced || !controls) return;
+        this._appGridReplaced = false;
+        delete controls._onShowAppsButtonToggled;
+        delete controls._shiftState;
+        delete Main.overview.showApps;
+        // Re-register the stock binding exactly as OverviewControls does.
+        Main.wm.removeKeybinding('toggle-application-view');
+        Main.wm.addKeybinding('toggle-application-view', new Gio.Settings({schema_id: 'org.gnome.shell.keybindings'}),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT, Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            controls._toggleAppsPage.bind(controls));
     }
 
     disable() {
@@ -132,6 +198,7 @@ export default class GlasslightExtension extends Extension {
         for (const source of this._scheduledActions?.values() ?? []) GLib.source_remove(source);
         this._scheduledActions?.clear();
         Main.wm.removeKeybinding('toggle-glasslight');
+        this._restoreAppGrid();
         this._cancellable?.cancel();
         if (this._tooltipTimer) GLib.source_remove(this._tooltipTimer);
         this._tooltipTimer = 0;
@@ -150,6 +217,7 @@ export default class GlasslightExtension extends Extension {
         this._files = [];
         this._apps = [];
         this._catalog = [];
+        this._settingsActions = [];
         this._rows = [];
         this._modeButtons?.clear();
         this._categoryButtons?.clear();
@@ -301,7 +369,13 @@ export default class GlasslightExtension extends Extension {
     }
 
     _refreshApps() {
-        this._apps = Gio.AppInfo.get_all().filter(app => app.should_show());
+        const installed = Gio.AppInfo.get_all();
+        this._settingsActions = buildSettingsActions(installed, {
+            detail: _('System settings'),
+            keywords: _('settings preferences'),
+            launch: app => app.launch([], global.create_app_launch_context(0, -1)),
+        });
+        this._apps = installed.filter(app => app.should_show());
         this._catalog = this._apps.map(app => {
             const categories = categoryIds(app.get_categories?.());
             return {id: app.get_id() ?? app.get_name(), title: app.get_display_name(),
@@ -439,7 +513,7 @@ export default class GlasslightExtension extends Extension {
             const content = new St.BoxLayout({vertical: grid, style_class: grid ? 'glasslight-app-tile-content' : 'glasslight-result-row',
                 x_expand: true, x_align: Clutter.ActorAlign.FILL});
             const appIcon = icon(item.gicon);
-            appIcon.icon_size = grid ? APP_GRID_ICON_SIZE : 28;
+            appIcon.icon_size = grid ? APP_GRID_ICON_SIZE : 34;
             appIcon.x_align = grid ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.START;
             content.add_child(appIcon);
             const texts = new St.BoxLayout({vertical: true, x_expand: true, y_align: Clutter.ActorAlign.CENTER});
@@ -668,7 +742,7 @@ export default class GlasslightExtension extends Extension {
         for (const surface of this._surfaces) surface.sync();
     }
 
-    _show() {
+    _show(mode = 'all') {
         if (!this._alive || (this._overlay.visible && !this._closing)) return;
         Main.overview.hide();
         const serial = ++this._animationSerial;
@@ -683,7 +757,7 @@ export default class GlasslightExtension extends Extension {
         this._mode = 'all';
         this._actionSession = null;
         this._entry.set_text('');
-        this._setMode('all');
+        this._setMode(mode);
         this._entry.clutter_text.grab_key_focus();
         this._position(false);
         this._group.remove_all_transitions();
@@ -876,8 +950,10 @@ export default class GlasslightExtension extends Extension {
             return Clutter.EVENT_STOP;
         }
         if (key === Clutter.KEY_Escape) {
-            if (this._actionSession) this._cancelActionSession();
-            else this._hide();
+            if (this._mode !== 'all') {
+                this._entry.set_text('');
+                this._setMode('all');
+            } else this._hide();
             return Clutter.EVENT_STOP;
         }
         if ((key === Clutter.KEY_Return || key === Clutter.KEY_KP_Enter) && this._actionSession &&
@@ -995,8 +1071,12 @@ export default class GlasslightExtension extends Extension {
         }
         result.sort((a, b) => b.rank - a.rank || ((b.modified ?? 0) - (a.modified ?? 0)));
         const items = result.slice(0, all ? 10 : 40);
-        if (query && all) items.push({title: format(_('Search the web for «%s»'), this._entry.get_text().trim()), detail: _('DuckDuckGo · default browser'),
-            fallback: 'web-browser-symbolic', activate: () => this._uri(`https://duckduckgo.com/?q=${encodeURIComponent(this._entry.get_text().trim())}`)});
+        if (query && all) {
+            const text = this._entry.get_text().trim();
+            const engine = resolveSearchEngine(this._settings.get_string('search-engine'), this._settings.get_string('custom-search-url'));
+            items.push({title: format(_('Search the web for «%s»'), text), detail: format(_('%s · default browser'), engine.name),
+                fallback: 'web-browser-symbolic', activate: () => this._uri(searchUrl(engine, text))});
+        }
         return items;
     }
 
@@ -1006,7 +1086,7 @@ export default class GlasslightExtension extends Extension {
             scheduleNotification: (seconds, title, body) => this._scheduleNotification(seconds, title, body),
             cancelClipboardRead: () => this._cancelClipboardRead(),
             clearClipboard: () => { this._clips = []; this._clipboardCleared = true; },
-        });
+        }).concat(this._settingsActions);
     }
 
     _actionItems() {
@@ -1227,11 +1307,13 @@ export default class GlasslightExtension extends Extension {
             }
             if (!items.length) this._list.add_child(label(this._mode === 'clipboard' && !query ? _('No supported text or image in the clipboard') : _('No matches found'), 'glasslight-empty'));
             this._status.text = this._actionSession
-                ? (this._actionSession.result ? _('↵  copy     esc  back to actions')
-                    : format(_('%d of %d     ↵  continue     esc  cancel'), this._actionSession.index + 1, this._actionSession.action.params.length))
+                ? (this._actionSession.result ? _('↵  copy     esc  back')
+                    : format(_('%d of %d     ↵  continue     esc  back'), this._actionSession.index + 1, this._actionSession.action.params.length))
                 : this._mode === 'clipboard'
                 ? (this._clipboardMessage || (this._settings.get_boolean('remember-clipboard') ? _('History in memory only · up to 20 entries / 32 MiB') : _('Text and images · enable history in preferences')))
-                : this._mode === 'files' ? format(ngettext('%d file', '%d files', this._files.length), this._files.length) + (this._indexing ? _(' · indexing…') : '') : _('↑ ↓  select     space  preview     ↵  open     esc  close');
+                : this._mode === 'files' ? format(ngettext('%d file', '%d files', this._files.length), this._files.length) + (this._indexing ? _(' · indexing…') : '')
+                : this._mode === 'actions' ? _('↑ ↓  select     ↵  open     esc  back')
+                : _('↑ ↓  select     space  preview     ↵  open     esc  close');
         }
         this._mainSurface.configure(expanded ? 22 : 30, this._settings.get_int('blur-radius'));
         this._select(0, false);

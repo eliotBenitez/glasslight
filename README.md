@@ -77,7 +77,16 @@ Just start typing to search everywhere, then use the keyboard for the rest:
 | `Enter` | Open, run, or copy the selection |
 | `Esc` | Cancel the action or close Glasslight |
 
-Want to tweak the theme, blur, clipboard history, or shortcut?
+Search GNOME Settings panels in global search or **Actions** (`Ctrl+3`): try
+“Wi-Fi”, “sound”, or a setting's name in your system language. Click a result
+or press `Enter` to open Settings directly at that section, including nested
+pages such as Users. Results use installed GNOME panel desktop entries and
+their localized names, descriptions, and keywords; unavailable entries are not
+listed. Searching stays local and opens nothing until you select a result.
+
+Want to tweak the theme, blur, clipboard history, or shortcut? Preferences can
+also make `Super+A`, the Show Apps button, and a second `Super` press open
+Glasslight's app catalogue instead of the GNOME app grid.
 
 ```sh
 gnome-extensions prefs glasslight
@@ -86,8 +95,9 @@ gnome-extensions prefs glasslight
 ## Good to know
 
 - Clipboard history lives in memory only and clears when your session ends.
-- A web search opens only when you pick the DuckDuckGo result — never while
-  typing.
+- A web search opens only when you pick the web result — never while typing.
+  Choose DuckDuckGo (default), Google, Bing, Yandex, Brave Search, Startpage,
+  Ecosia, or your own URL template in preferences.
 - Passwords are generated from `/dev/urandom`.
 - Glasslight targets GNOME Shell **50** only, for now.
 

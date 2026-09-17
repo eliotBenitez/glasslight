@@ -2,6 +2,7 @@ import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
 import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+import {SEARCH_ENGINES, isSearchTemplate} from './searchEngines.js';
 
 export default class GlasslightPreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
@@ -22,6 +23,10 @@ export default class GlasslightPreferences extends ExtensionPreferences {
         const clipboard = new Adw.SwitchRow({title: _('Clipboard history'), subtitle: _('Text and images: up to 20 entries / 32 MiB, memory only')});
         settings.bind('remember-clipboard', clipboard, 'active', Gio.SettingsBindFlags.DEFAULT);
         behaviour.add(clipboard);
+        const appGrid = new Adw.SwitchRow({title: _('Replace the GNOME app grid'),
+            subtitle: _('Super+A, the Show Apps button and a second Super press open Glasslight')});
+        settings.bind('replace-app-grid', appGrid, 'active', Gio.SettingsBindFlags.DEFAULT);
+        behaviour.add(appGrid);
         const shortcut = new Adw.EntryRow({title: _('Hotkey (for example, <Alt>space)'), use_markup: false, text: settings.get_strv('toggle-glasslight')[0] ?? ''});
         shortcut.show_apply_button = true;
         shortcut.connect('apply', () => {
@@ -34,6 +39,30 @@ export default class GlasslightPreferences extends ExtensionPreferences {
         });
         behaviour.add(shortcut);
         page.add(behaviour);
+        const web = new Adw.PreferencesGroup({title: _('Web search'),
+            description: _('The query opens in the default browser only when you pick the web result')});
+        const engineIds = [...SEARCH_ENGINES.map(engine => engine.id), 'custom'];
+        const engine = new Adw.ComboRow({title: _('Search engine'),
+            model: Gtk.StringList.new([...SEARCH_ENGINES.map(item => item.name), _('Custom')]),
+            selected: Math.max(0, engineIds.indexOf(settings.get_string('search-engine')))});
+        const customUrl = new Adw.EntryRow({title: _('Search URL (%s is replaced by the query)'), use_markup: false,
+            text: settings.get_string('custom-search-url'), show_apply_button: true});
+        const syncCustomUrl = () => { customUrl.visible = engineIds[engine.selected] === 'custom'; };
+        engine.connect('notify::selected', () => {
+            settings.set_string('search-engine', engineIds[engine.selected]);
+            syncCustomUrl();
+        });
+        customUrl.connect('apply', () => {
+            // Keep the last valid template; the shell falls back to DuckDuckGo
+            // while no valid custom template is stored.
+            const template = customUrl.text.trim();
+            if (isSearchTemplate(template)) settings.set_string('custom-search-url', template);
+            else customUrl.text = settings.get_string('custom-search-url');
+        });
+        syncCustomUrl();
+        web.add(engine);
+        web.add(customUrl);
+        page.add(web);
         window.add(page);
     }
 }

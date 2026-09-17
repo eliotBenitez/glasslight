@@ -49,9 +49,9 @@
 .glasslight-light .glasslight-scroll StScrollBar > .vhandle:hover { background-color: rgba(42,42,44,0.56); }
 .glasslight-dark .glasslight-scroll StScrollBar > .vhandle:hover { background-color: rgba(245,245,247,0.58); }
 .glasslight-result { padding: 0; border: 0; border-radius: 10px; color: inherit; background-color: transparent; }
-.glasslight-result-row { padding: 7px 10px; spacing: 11px; }
-.glasslight-title { font-size: 13px; font-weight: 500; }
-.glasslight-subtitle { font-size: 11px; padding-top: 1px; }
+.glasslight-result-row { padding: 9px 13px; spacing: 14px; }
+.glasslight-title { font-size: 15px; font-weight: 500; }
+.glasslight-subtitle { font-size: 12px; padding-top: 1px; }
 .glasslight-light .glasslight-subtitle, .glasslight-light .glasslight-section, .glasslight-light .glasslight-status { color: rgba(32,32,34,0.62); }
 .glasslight-dark .glasslight-subtitle, .glasslight-dark .glasslight-section, .glasslight-dark .glasslight-status { color: rgba(245,245,247,0.62); }
 .glasslight-light .glasslight-result:selected, .glasslight-light .glasslight-result:focus { background-color: rgba(0,0,0,0.085); }
