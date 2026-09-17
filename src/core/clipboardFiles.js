@@ -1,7 +1,7 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Meta from 'gi://Meta';
-import {_} from './i18n.js';
+import {_} from '../shared/i18n.js';
 
 export const FILE_TYPES = ['x-special/gnome-copied-files', 'text/uri-list'];
 

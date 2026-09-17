@@ -1,4 +1,4 @@
-import {_, format} from './i18n.js';
+import {_, format} from '../shared/i18n.js';
 
 export function integerValue(text, label, minimum, maximum, fallback = null) {
     const source = text.trim() || (fallback === null ? '' : String(fallback));

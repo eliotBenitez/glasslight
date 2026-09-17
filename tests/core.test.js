@@ -1,8 +1,8 @@
-import {categoryIds, catalogue} from '../appCatalog.js';
-import {evaluateExpression, formatCalcResult} from '../calculator.js';
-import {fold, score} from '../search.js';
-import {resolveSearchEngine, searchUrl} from '../searchEngines.js';
-import {buildSettingsActions} from '../settingsSearch.js';
+import {categoryIds, catalogue} from '../src/search/appCatalog.js';
+import {evaluateExpression, formatCalcResult} from '../src/search/calculator.js';
+import {fold, score} from '../src/search/search.js';
+import {resolveSearchEngine, searchUrl} from '../src/search/searchEngines.js';
+import {buildSettingsActions} from '../src/core/settingsSearch.js';
 
 function assert(condition, message) {
     if (!condition)

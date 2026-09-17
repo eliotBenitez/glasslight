@@ -8,16 +8,16 @@ The extension UUID is `glasslight`. Preserve it in `metadata.json`, schema paths
 
 ## Project Structure & Module Organization
 
-- `extension.js` is the integration layer. It owns enable/disable lifecycle, actors, input handling, result rendering, file indexing, clipboard history, and activation.
-- `glass.js` implements the masked native `Shell.BlurEffect` surface and tracks scene changes. Keep GPU-effect and background-sampling logic here.
-- `actions.js`, `actionUtils.js`, `mpris.js`, and `random.js` define built-in actions, input parsing, media control, and secure random generation.
-- `appCatalog.js`, `search.js`, `calculator.js`, and `searchEngines.js` contain focused ranking, normalization, expression-evaluation, and web-search URL logic. Prefer small, side-effect-free helpers in these files.
-- `settingsSearch.js` builds zero-parameter actions from installed GNOME Settings panel desktop entries, including `NoDisplay` entries. Use their localized metadata and launch the original entry to preserve nested panel destinations. These actions appear in global search and Actions, refresh with the app catalogue, and are cleared on disable.
-- `clipboardFiles.js` validates clipboard MIME types and reads local image/file data with byte limits and cancellation.
-- `widgets.js` contains reusable actor factories; `constants.js` contains shared modes, limits, grid dimensions, and motion timings.
-- `prefs.js` builds the Libadwaita preferences UI. `stylesheet.css` contains all Shell theme rules.
+- Root `extension.js` re-exports the extension class from `src/extension.js`. That implementation owns enable/disable lifecycle, actors, input handling, result rendering, file indexing, clipboard history, and activation. Keep GNOME entry points (`extension.js`, `prefs.js`) at the archive root.
+- `src/ui/glass.js` implements the masked native `Shell.BlurEffect` surface and tracks scene changes. Keep GPU-effect and background-sampling logic here.
+- `src/core/actions.js`, `src/core/actionUtils.js`, `src/core/mpris.js`, and `src/core/random.js` define built-in actions, input parsing, media control, and secure random generation.
+- `src/search/appCatalog.js`, `src/search/search.js`, `src/search/calculator.js`, and `src/search/searchEngines.js` contain focused ranking, normalization, expression-evaluation, and web-search URL logic. Prefer small, side-effect-free helpers in these files.
+- `src/core/settingsSearch.js` builds zero-parameter actions from installed GNOME Settings panel desktop entries, including `NoDisplay` entries. Use their localized metadata and launch the original entry to preserve nested panel destinations. These actions appear in global search and Actions, refresh with the app catalogue, and are cleared on disable.
+- `src/core/clipboardFiles.js` validates clipboard MIME types and reads local image/file data with byte limits and cancellation.
+- `src/ui/widgets.js` contains reusable actor factories; `src/shared/constants.js` contains shared modes, limits, grid dimensions, and motion timings.
+- Root `prefs.js` builds the Libadwaita preferences UI in its separate process and imports only Shell-independent helpers from `src/search/`. `stylesheet.css` contains all Shell theme rules.
 - `metadata.json` declares extension compatibility and the `gettext-domain` (`glasslight`). `schemas/*.gschema.xml` defines persistent settings; `schemas/gschemas.compiled` is generated from it.
-- `i18n.js` exposes the shell-side gettext helpers (`_`, `ngettext`, `pgettext`, and a `%s`/`%d` `format()`), resolved from the extension via `Extension.lookupByURL`. `prefs.js` imports gettext from the prefs resource instead, since it runs in a separate process.
+- `src/shared/i18n.js` exposes the shell-side gettext helpers (`_`, `ngettext`, `pgettext`, and a `%s`/`%d` `format()`), resolved from the extension via `Extension.lookupByURL`. `prefs.js` imports gettext from the prefs resource instead, since it runs in a separate process.
 - `po/glasslight.pot` is the message template; `po/<lang>.po` are the translations, compiled to `locale/<lang>/LC_MESSAGES/glasslight.mo`.
 - `tests/core.test.js` covers the Shell-independent calculator, search, and application-catalogue helpers with GJS.
 - `Makefile` provides the validation, packaging, and local installation entry points; `.github/` contains CI and contribution templates.
@@ -25,14 +25,14 @@ The extension UUID is `glasslight`. Preserve it in `metadata.json`, schema paths
 
 ## Localization
 
-All user-facing strings are English source text wrapped in `_()` (or `ngettext()`), translated at runtime through gettext; translations follow the active GNOME locale. The `MODES`/`CATEGORIES` tables in `constants.js`/`appCatalog.js` keep plain English `name`/`hint` values (no `_()` there — the module is imported before the gettext domain binds) and are translated at their render sites in `extension.js`.
+All user-facing strings are English source text wrapped in `_()` (or `ngettext()`), translated at runtime through gettext; translations follow the active GNOME locale. The `MODES`/`CATEGORIES` tables in `src/shared/constants.js`/`src/search/appCatalog.js` keep plain English `name`/`hint` values (no `_()` there — the module is imported before the gettext domain binds) and are translated at their render sites in `src/extension.js`.
 
 After changing or adding a translatable string, refresh the template and translations:
 
 ```sh
 xgettext --language=JavaScript --from-code=UTF-8 \
   --keyword=_ --keyword=ngettext:1,2 --keyword=pgettext:1c,2 \
-  --package-name="Glasslight" --output=po/glasslight.pot *.js
+  --package-name="Glasslight" --output=po/glasslight.pot *.js src/*.js src/*/*.js
 ```
 
 Strings passed to `_()` as variables (the `MODES`/`CATEGORIES` names) are invisible to `xgettext`; keep their manual entries at the end of the `.pot` in sync. Then merge and compile:
@@ -48,7 +48,7 @@ Add a new language by running `msginit --locale=<code> --input=po/glasslight.pot
 
 `enable()` creates settings, signal registries, transient state, the launcher actors, keybinding, clipboard listener, and asynchronous file index. `disable()` must fully reverse that work. Any new signal, timeout, cancellable operation, keybinding, or actor must have an explicit cleanup path. Use the existing `_connect()` registry for long-lived signals and remove GLib sources once they fire or during shutdown.
 
-Input is debounced before search. The active mode selects the relevant source, while rendering and activation remain centralized in `extension.js`. Keep reusable parsing and ranking outside that file to avoid making the main class harder to maintain.
+Input is debounced before search. The active mode selects the relevant source, while rendering and activation remain centralized in `src/extension.js`. Keep reusable parsing and ranking outside that file to avoid making the main class harder to maintain.
 
 ## Build, Install, and Development Commands
 
@@ -63,14 +63,14 @@ gnome-extensions disable glasslight
 gnome-extensions enable glasslight
 ```
 
-`make check` validates metadata, translations, the XML schema, and pure-JavaScript core tests. `make package` also refreshes `schemas/gschemas.compiled` and the compiled Russian catalogue, then creates the distributable archive in `dist/`. Run it after schema or translation edits and include regenerated tracked files with the change.
+`make check` validates metadata, translations, the XML schema, pure-JavaScript core tests, and module layout with `tests/layout.test.py`. The layout test checks relative imports and reachability from the GNOME entry points. `make package` also refreshes `schemas/gschemas.compiled` and the compiled Russian catalogue, creates the distributable archive in `dist/`, and checks its module graph and contents against the source tree. Run it after schema or translation edits and include regenerated tracked files with the change.
 
 To create a distributable archive with metadata at the ZIP root:
 
 ```sh
 mkdir -p dist
 zip -r dist/Glasslight-GNOME-50.shell-extension.zip \
-  *.js stylesheet.css metadata.json schemas locale
+  *.js src icon.png stylesheet.css metadata.json schemas locale
 gnome-extensions install --force \
   dist/Glasslight-GNOME-50.shell-extension.zip
 ```

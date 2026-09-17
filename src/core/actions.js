@@ -4,10 +4,10 @@ import GLib from 'gi://GLib';
 import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {alarmValue, changedCase, durationLabel, durationValue, integerValue} from './actionUtils.js';
-import {fold} from './search.js';
+import {fold} from '../search/search.js';
 import {randomInteger, password} from './random.js';
 import {mprisControl} from './mpris.js';
-import {_, format} from './i18n.js';
+import {_, format} from '../shared/i18n.js';
 
 // Match a leading quick-key ("timer 10m", "rn 1 6") to an action, returning the
 // remaining words as positional arguments. Pure string matching.

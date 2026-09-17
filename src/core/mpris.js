@@ -1,6 +1,6 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
-import {_} from './i18n.js';
+import {_} from '../shared/i18n.js';
 
 export function dbusCall(name, path, interfaceName, method, parameters = null, replyType = null) {
     return new Promise((resolve, reject) => Gio.DBus.session.call(name, path, interfaceName, method,

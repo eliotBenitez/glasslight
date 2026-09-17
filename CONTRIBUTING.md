@@ -21,6 +21,24 @@ make package
 
 The archive appears at `dist/Glasslight-GNOME-50.shell-extension.zip`.
 
+## Source layout
+
+- `extension.js`: GNOME entry point, re-exporting `src/extension.js`.
+- `src/extension.js`: launcher lifecycle and integration.
+- `src/core/`: actions, media control, clipboard files, and Settings discovery.
+- `src/search/`: ranking, application catalogue, calculator, and web-search helpers.
+- `src/ui/`: Shell actors and native glass effects.
+- `src/shared/`: constants and Shell-side localization.
+- `prefs.js`: separate Libadwaita preferences entry point, sharing only
+  Shell-independent search helpers.
+- `tests/`: GJS core tests and Python module-layout/archive checks.
+
+Keep `metadata.json`, `stylesheet.css`, `extension.js`, and `prefs.js` at the
+archive root for GNOME. The build preserves the `src/` hierarchy without a
+transpilation step. `make check` validates relative imports and module
+reachability; `make package` also checks that archived modules match the sources.
+See [AGENTS.md](AGENTS.md) for lifecycle and localization conventions.
+
 ## Change guidelines
 
 - Preserve the `glasslight` UUID and the existing JavaScript style.

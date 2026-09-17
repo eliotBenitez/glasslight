@@ -18,738 +18,738 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: actionUtils.js:5
+#: src/core/actionUtils.js:5
 #, javascript-format
 msgid "%s: enter an integer"
 msgstr ""
 
-#: actionUtils.js:8
+#: src/core/actionUtils.js:8
 #, javascript-format
 msgid "%s: allowed from %d to %d"
 msgstr ""
 
-#: actionUtils.js:14
+#: src/core/actionUtils.js:14
 msgid "Enter a timer duration"
 msgstr ""
 
-#: actionUtils.js:30
+#: src/core/actionUtils.js:30
 #, javascript-format
 msgid "Unknown unit «%s»"
 msgstr ""
 
-#: actionUtils.js:36
+#: src/core/actionUtils.js:36
 msgid "Duration example: 10 min, 1h 30m or 05:00"
 msgstr ""
 
-#: actionUtils.js:40
+#: src/core/actionUtils.js:40
 msgid "A timer can last from 1 second to 7 days"
 msgstr ""
 
-#: actionUtils.js:50
+#: src/core/actionUtils.js:50
 #, javascript-format
 msgid "%d d"
 msgstr ""
 
-#: actionUtils.js:51
+#: src/core/actionUtils.js:51
 #, javascript-format
 msgid "%d h"
 msgstr ""
 
-#: actionUtils.js:52
+#: src/core/actionUtils.js:52
 #, javascript-format
 msgid "%d min"
 msgstr ""
 
-#: actionUtils.js:53
+#: src/core/actionUtils.js:53
 #, javascript-format
 msgid "%d sec"
 msgstr ""
 
-#: actionUtils.js:59
+#: src/core/actionUtils.js:59
 msgid "Enter a time as HH:MM"
 msgstr ""
 
-#: actionUtils.js:62
+#: src/core/actionUtils.js:62
 msgid "Invalid alarm time"
 msgstr ""
 
-#: actionUtils.js:75
+#: src/core/actionUtils.js:75
 msgid "Unknown case variant"
 msgstr ""
 
-#: actions.js:33
+#: src/core/actions.js:33
 msgid "Random number"
 msgstr ""
 
-#: actions.js:34
+#: src/core/actions.js:34
 msgid "random number generator"
 msgstr ""
 
-#: actions.js:34
+#: src/core/actions.js:34
 msgid "Pick a number between a minimum and maximum"
 msgstr ""
 
-#: actions.js:37
+#: src/core/actions.js:37
 msgid "Minimum value"
 msgstr ""
 
-#: actions.js:37
+#: src/core/actions.js:37
 msgid "Minimum · default 1"
 msgstr ""
 
-#: actions.js:38
+#: src/core/actions.js:38
 msgid "Minimum"
 msgstr ""
 
-#: actions.js:39
+#: src/core/actions.js:39
 msgid "Maximum value"
 msgstr ""
 
-#: actions.js:39
+#: src/core/actions.js:39
 msgid "Maximum · default 100"
 msgstr ""
 
-#: actions.js:41
+#: src/core/actions.js:41
 msgid "Maximum"
 msgstr ""
 
-#: actions.js:42
+#: src/core/actions.js:42
 msgid "Maximum must be at least the minimum"
 msgstr ""
 
-#: actions.js:48
+#: src/core/actions.js:48
 #, javascript-format
 msgid "Random number from %d to %d"
 msgstr ""
 
-#: actions.js:49
+#: src/core/actions.js:49
 msgid "Start a timer"
 msgstr ""
 
-#: actions.js:50
+#: src/core/actions.js:50
 msgid "timer countdown"
 msgstr ""
 
-#: actions.js:50
+#: src/core/actions.js:50
 msgid "Notify when the countdown ends"
 msgstr ""
 
-#: actions.js:52
+#: src/core/actions.js:52
 msgid "Duration"
 msgstr ""
 
-#: actions.js:52
+#: src/core/actions.js:52
 msgid "For example: 10 min, 1h 30m or 05:00"
 msgstr ""
 
-#: actions.js:57
+#: src/core/actions.js:57
 msgid "Timer finished"
 msgstr ""
 
-#: actions.js:57
+#: src/core/actions.js:57
 #, javascript-format
 msgid "%s elapsed"
 msgstr ""
 
-#: actions.js:58
+#: src/core/actions.js:58
 #, javascript-format
 msgid "Timer set for %s"
 msgstr ""
 
-#: actions.js:60
+#: src/core/actions.js:60
 msgid "Set an alarm"
 msgstr ""
 
-#: actions.js:61
+#: src/core/actions.js:61
 msgid "alarm clock"
 msgstr ""
 
-#: actions.js:61
+#: src/core/actions.js:61
 msgid "Notify at a specific time"
 msgstr ""
 
-#: actions.js:63
+#: src/core/actions.js:63
 msgid "Alarm time"
 msgstr ""
 
-#: actions.js:63
+#: src/core/actions.js:63
 msgid "Time as HH:MM"
 msgstr ""
 
-#: actions.js:66
+#: src/core/actions.js:66
 msgid "Alarm"
 msgstr ""
 
-#: actions.js:66
+#: src/core/actions.js:66
 #, javascript-format
 msgid "It is now %s"
 msgstr ""
 
-#: actions.js:67
+#: src/core/actions.js:67
 #, javascript-format
 msgid "Alarm set for %s"
 msgstr ""
 
-#: actions.js:69
+#: src/core/actions.js:69
 msgid "Flip a coin"
 msgstr ""
 
-#: actions.js:70
+#: src/core/actions.js:70
 msgid "coin flip"
 msgstr ""
 
-#: actions.js:70
+#: src/core/actions.js:70
 msgid "Randomly pick one of two sides"
 msgstr ""
 
-#: actions.js:72
+#: src/core/actions.js:72
 msgid "Heads"
 msgstr ""
 
-#: actions.js:72
+#: src/core/actions.js:72
 msgid "Tails"
 msgstr ""
 
-#: actions.js:72
+#: src/core/actions.js:72
 msgid "Coin flip result"
 msgstr ""
 
-#: actions.js:73
+#: src/core/actions.js:73
 msgid "Roll a die"
 msgstr ""
 
-#: actions.js:74
+#: src/core/actions.js:74
 msgid "dice roll"
 msgstr ""
 
-#: actions.js:74
+#: src/core/actions.js:74
 msgid "Roll a die with a chosen number of sides"
 msgstr ""
 
-#: actions.js:76 actions.js:77
+#: src/core/actions.js:76 src/core/actions.js:77
 msgid "Number of sides"
 msgstr ""
 
-#: actions.js:76
+#: src/core/actions.js:76
 msgid "Sides · default 6"
 msgstr ""
 
-#: actions.js:79
+#: src/core/actions.js:79
 #, javascript-format
 msgid "d%d roll"
 msgstr ""
 
-#: actions.js:80
+#: src/core/actions.js:80
 msgid "Generate a password"
 msgstr ""
 
-#: actions.js:81
+#: src/core/actions.js:81
 msgid "password generate"
 msgstr ""
 
-#: actions.js:81
+#: src/core/actions.js:81
 msgid "Create a password of letters, digits and symbols"
 msgstr ""
 
-#: actions.js:83 actions.js:84
+#: src/core/actions.js:83 src/core/actions.js:84
 msgid "Password length"
 msgstr ""
 
-#: actions.js:83
+#: src/core/actions.js:83
 msgid "From 4 to 128 characters · default 16"
 msgstr ""
 
-#: actions.js:86
+#: src/core/actions.js:86
 #, javascript-format
 msgid "%d characters · Enter — copy"
 msgstr ""
 
-#: actions.js:87
+#: src/core/actions.js:87
 msgid "Generate a UUID"
 msgstr ""
 
-#: actions.js:88
+#: src/core/actions.js:88
 msgid "uuid guid identifier"
 msgstr ""
 
-#: actions.js:88
+#: src/core/actions.js:88
 msgid "Create a random UUID v4"
 msgstr ""
 
-#: actions.js:90
+#: src/core/actions.js:90
 msgid "UUID v4 · Enter — copy"
 msgstr ""
 
-#: actions.js:91
+#: src/core/actions.js:91
 msgid "Change text case"
 msgstr ""
 
-#: actions.js:92
+#: src/core/actions.js:92
 msgid "change case uppercase lowercase title"
 msgstr ""
 
-#: actions.js:92
+#: src/core/actions.js:92
 msgid "Process typed or copied text"
 msgstr ""
 
-#: actions.js:95
+#: src/core/actions.js:95
 msgid "Case variant"
 msgstr ""
 
-#: actions.js:95
+#: src/core/actions.js:95
 msgid "Choose a variant"
 msgstr ""
 
-#: actions.js:97
+#: src/core/actions.js:97
 msgid "UPPERCASE"
 msgstr ""
 
-#: actions.js:98
+#: src/core/actions.js:98
 msgid "lowercase"
 msgstr ""
 
-#: actions.js:99
+#: src/core/actions.js:99
 msgid "Title Case"
 msgstr ""
 
-#: actions.js:107
+#: src/core/actions.js:107
 msgid "Choose a case variant"
 msgstr ""
 
-#: actions.js:110
+#: src/core/actions.js:110
 msgid "Text"
 msgstr ""
 
-#: actions.js:110
+#: src/core/actions.js:110
 msgid "Enter text or use the clipboard contents"
 msgstr ""
 
-#: actions.js:112
+#: src/core/actions.js:112
 msgid "Enter text to process"
 msgstr ""
 
-#: actions.js:117
+#: src/core/actions.js:117
 msgid "Converted text · Enter — copy"
 msgstr ""
 
-#: actions.js:118
+#: src/core/actions.js:118
 msgid "Turn on Do Not Disturb"
 msgstr ""
 
-#: actions.js:118
+#: src/core/actions.js:118
 msgid "Turn off Do Not Disturb"
 msgstr ""
 
-#: actions.js:119
+#: src/core/actions.js:119
 msgid "dnd do not disturb notifications"
 msgstr ""
 
-#: actions.js:120
+#: src/core/actions.js:120
 msgid "Hide notification banners"
 msgstr ""
 
-#: actions.js:120
+#: src/core/actions.js:120
 msgid "Show notification banners again"
 msgstr ""
 
-#: actions.js:124
+#: src/core/actions.js:124
 msgid "Do Not Disturb enabled"
 msgstr ""
 
-#: actions.js:124
+#: src/core/actions.js:124
 msgid "Do Not Disturb disabled"
 msgstr ""
 
-#: actions.js:126
+#: src/core/actions.js:126
 msgid "Play / pause"
 msgstr ""
 
-#: actions.js:127
+#: src/core/actions.js:127
 msgid "media play pause"
 msgstr ""
 
-#: actions.js:127
+#: src/core/actions.js:127
 msgid "Control the active MPRIS player"
 msgstr ""
 
-#: actions.js:129 mpris.js:33
+#: src/core/actions.js:129 src/core/mpris.js:33
 msgid "Next track"
 msgstr ""
 
-#: actions.js:130
+#: src/core/actions.js:130
 msgid "media next track"
 msgstr ""
 
-#: actions.js:130
+#: src/core/actions.js:130
 msgid "Skip to the next track"
 msgstr ""
 
-#: actions.js:132 mpris.js:33
+#: src/core/actions.js:132 src/core/mpris.js:33
 msgid "Previous track"
 msgstr ""
 
-#: actions.js:133
+#: src/core/actions.js:133
 msgid "media previous track"
 msgstr ""
 
-#: actions.js:133
+#: src/core/actions.js:133
 msgid "Return to the previous track"
 msgstr ""
 
-#: actions.js:135
+#: src/core/actions.js:135
 msgid "Copy the date"
 msgstr ""
 
-#: actions.js:136
+#: src/core/actions.js:136
 msgid "date today"
 msgstr ""
 
-#: actions.js:136
+#: src/core/actions.js:136
 msgid "Current date in the system format"
 msgstr ""
 
-#: actions.js:139
+#: src/core/actions.js:139
 msgid "Current date · Enter — copy"
 msgstr ""
 
-#: actions.js:140
+#: src/core/actions.js:140
 msgid "Copy the time"
 msgstr ""
 
-#: actions.js:141
+#: src/core/actions.js:141
 msgid "time now"
 msgstr ""
 
-#: actions.js:141
+#: src/core/actions.js:141
 msgid "Current time in the system format"
 msgstr ""
 
-#: actions.js:144
+#: src/core/actions.js:144
 msgid "Current time · Enter — copy"
 msgstr ""
 
-#: actions.js:145
+#: src/core/actions.js:145
 msgid "Clear the clipboard"
 msgstr ""
 
-#: actions.js:146
+#: src/core/actions.js:146
 msgid "clear clipboard"
 msgstr ""
 
-#: actions.js:146
+#: src/core/actions.js:146
 msgid "Remove the system clipboard and local history"
 msgstr ""
 
-#: actions.js:151
+#: src/core/actions.js:151
 msgid "Clipboard cleared"
 msgstr ""
 
-#: actions.js:153
+#: src/core/actions.js:153
 msgid "System settings"
 msgstr ""
 
-#: actions.js:154
+#: src/core/actions.js:154
 msgid "settings preferences"
 msgstr ""
 
-#: actions.js:154
+#: src/core/actions.js:154
 msgid "Open GNOME settings"
 msgstr ""
 
-#: actions.js:157
+#: src/core/actions.js:157
 msgid "The Settings app was not found"
 msgstr ""
 
-#: actions.js:160
+#: src/core/actions.js:160
 msgid "Screenshot"
 msgstr ""
 
-#: actions.js:160
+#: src/core/actions.js:160
 msgid "screenshot capture"
 msgstr ""
 
-#: actions.js:161
+#: src/core/actions.js:161
 msgid "Open the area selector"
 msgstr ""
 
-#: actions.js:163
+#: src/core/actions.js:163
 msgid "Show applications"
 msgstr ""
 
-#: actions.js:163
+#: src/core/actions.js:163
 msgid "apps overview"
 msgstr ""
 
-#: actions.js:164
+#: src/core/actions.js:164
 msgid "GNOME app grid"
 msgstr ""
 
-#: actions.js:166
+#: src/core/actions.js:166
 msgid "Home folder"
 msgstr ""
 
-#: actions.js:166
+#: src/core/actions.js:166
 msgid "home files"
 msgstr ""
 
-#: actions.js:167
+#: src/core/actions.js:167
 msgid "Open the file manager"
 msgstr ""
 
-#: actions.js:170
+#: src/core/actions.js:170
 msgid "Lock the screen"
 msgstr ""
 
-#: actions.js:170
+#: src/core/actions.js:170
 msgid "lock screen"
 msgstr ""
 
-#: actions.js:171
+#: src/core/actions.js:171
 msgid "Lock the current session"
 msgstr ""
 
-#: clipboardFiles.js:41
+#: src/core/clipboardFiles.js:41
 msgid "The clipboard file list is too large"
 msgstr ""
 
-#: clipboardFiles.js:53
+#: src/core/clipboardFiles.js:53
 msgid "This is not a regular image file"
 msgstr ""
 
-#: clipboardFiles.js:54 clipboardFiles.js:69
+#: src/core/clipboardFiles.js:54 src/core/clipboardFiles.js:69
 msgid "Image larger than 16 MiB"
 msgstr ""
 
-#: clipboardFiles.js:57
+#: src/core/clipboardFiles.js:57
 msgid "Unsupported image format"
 msgstr ""
 
-#: extension.js:247
+#: src/extension.js:247
 msgid "Back to Glasslight"
 msgstr ""
 
-#: extension.js:259 extension.js:671
+#: src/extension.js:259 src/extension.js:671
 msgid "Glasslight Search"
 msgstr ""
 
-#: extension.js:272
+#: src/extension.js:272
 msgid "Clear"
 msgstr ""
 
-#: extension.js:390
+#: src/extension.js:390
 msgid "Previous category (Alt+←)"
 msgstr ""
 
-#: extension.js:391
+#: src/extension.js:391
 msgid "Next category (Alt+→)"
 msgstr ""
 
-#: extension.js:399 extension.js:406
+#: src/extension.js:399 src/extension.js:406
 msgid "Catalogue view"
 msgstr ""
 
-#: extension.js:408
+#: src/extension.js:408
 msgid "Grid"
 msgstr ""
 
-#: extension.js:408
+#: src/extension.js:408
 msgid "List"
 msgstr ""
 
-#: extension.js:479
+#: src/extension.js:479
 msgid "Suggested"
 msgstr ""
 
-#: extension.js:480
+#: src/extension.js:480
 #, javascript-format
 msgid "Results · %d"
 msgstr ""
 
-#: extension.js:481
+#: src/extension.js:481
 msgid "All applications"
 msgstr ""
 
-#: extension.js:483
+#: src/extension.js:483
 msgid "No applications found in this category"
 msgstr ""
 
-#: extension.js:483
+#: src/extension.js:483
 msgid "No applications available"
 msgstr ""
 
-#: extension.js:484
+#: src/extension.js:484
 #, javascript-format
 msgid "%d app"
 msgid_plural "%d apps"
 msgstr[0] ""
 msgstr[1] ""
 
-#: extension.js:485
+#: src/extension.js:485
 #, javascript-format
 msgid "%s  ·  ↑ ↓ ← → select  ·  ↵ open  ·  Alt+←/→ categories"
 msgstr ""
 
-#: extension.js:1026
+#: src/extension.js:1026
 #, javascript-format
 msgid "%s · Enter — copy"
 msgstr ""
 
-#: extension.js:1034
+#: src/extension.js:1034
 msgid "Application"
 msgstr ""
 
-#: extension.js:1047
+#: src/extension.js:1047
 #, javascript-format
 msgid "Quick Key · %s"
 msgstr ""
 
-#: extension.js:1054
+#: src/extension.js:1054
 msgid "image picture screenshot"
 msgstr ""
 
-#: extension.js:1056
+#: src/extension.js:1056
 msgid "Image"
 msgstr ""
 
-#: extension.js:1056
+#: src/extension.js:1056
 #, javascript-format
 msgid "%s · %d KB · %s"
 msgstr ""
 
-#: extension.js:1056
+#: src/extension.js:1056
 msgid "Enter — copy file list"
 msgstr ""
 
-#: extension.js:1056 extension.js:1061 extension.js:1214
+#: src/extension.js:1056 src/extension.js:1061 src/extension.js:1214
 msgid "Enter — copy"
 msgstr ""
 
-#: extension.js:1069
+#: src/extension.js:1069
 #, javascript-format
 msgid "Search the web for «%s»"
 msgstr ""
 
-#: extension.js:1069
+#: src/extension.js:1069
 #, javascript-format
 msgid "%s · default browser"
 msgstr ""
 
-#: extension.js:1097
+#: src/extension.js:1097
 #, javascript-format
 msgid "Continue with «%s»"
 msgstr ""
 
-#: extension.js:1215
+#: src/extension.js:1215
 msgid "Result"
 msgstr ""
 
-#: extension.js:1271
+#: src/extension.js:1271
 msgid "Best matches"
 msgstr ""
 
-#: extension.js:1300
+#: src/extension.js:1300
 msgid "No supported text or image in the clipboard"
 msgstr ""
 
-#: extension.js:1300
+#: src/extension.js:1300
 msgid "No matches found"
 msgstr ""
 
-#: extension.js:1302
+#: src/extension.js:1302
 msgid "↵  copy     esc  back"
 msgstr ""
 
-#: extension.js:1303
+#: src/extension.js:1303
 #, javascript-format
 msgid "%d of %d     ↵  continue     esc  back"
 msgstr ""
 
-#: extension.js:1305
+#: src/extension.js:1305
 msgid "History in memory only · up to 20 entries / 32 MiB"
 msgstr ""
 
-#: extension.js:1305
+#: src/extension.js:1305
 msgid "Text and images · enable history in preferences"
 msgstr ""
 
-#: extension.js:1306
+#: src/extension.js:1306
 #, javascript-format
 msgid "%d file"
 msgid_plural "%d files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: extension.js:1306
+#: src/extension.js:1306
 msgid " · indexing…"
 msgstr ""
 
-#: extension.js:1307
+#: src/extension.js:1307
 msgid "↑ ↓  select     ↵  open     esc  back"
 msgstr ""
 
-#: extension.js:1308
+#: src/extension.js:1308
 msgid "↑ ↓  select     space  preview     ↵  open     esc  close"
 msgstr ""
 
-#: extension.js:1368 extension.js:1564
+#: src/extension.js:1368 src/extension.js:1564
 msgid "Image larger than 16 MiB — preview not loaded"
 msgstr ""
 
-#: extension.js:1439
+#: src/extension.js:1439
 msgid "The document has no pages"
 msgstr ""
 
-#: extension.js:1490
+#: src/extension.js:1490
 msgid "Space or Esc to close"
 msgstr ""
 
-#: extension.js:1504
+#: src/extension.js:1504
 msgid "Empty file"
 msgstr ""
 
-#: extension.js:1517 extension.js:1525 extension.js:1678
+#: src/extension.js:1517 src/extension.js:1525 src/extension.js:1678
 #, javascript-format
 msgid "Preview unavailable: %s"
 msgstr ""
 
-#: extension.js:1563
+#: src/extension.js:1563
 msgid "The clipboard returned an empty image"
 msgstr ""
 
-#: extension.js:1571
+#: src/extension.js:1571
 msgid "Read cancelled"
 msgstr ""
 
-#: extension.js:1605
+#: src/extension.js:1605
 msgid "Loading thumbnail…"
 msgstr ""
 
-#: extension.js:1617
+#: src/extension.js:1617
 msgid "Loading file thumbnails…"
 msgstr ""
 
-#: extension.js:1632
+#: src/extension.js:1632
 msgid "Some thumbnails skipped: 32 MiB limit"
 msgstr ""
 
-#: extension.js:1646
+#: src/extension.js:1646
 #, javascript-format
 msgid "Some files are unavailable: %s"
 msgstr ""
 
-#: extension.js:1649
+#: src/extension.js:1649
 msgid "No supported local images in the list"
 msgstr ""
 
-#: extension.js:1678 extension.js:1684
+#: src/extension.js:1678 src/extension.js:1684
 msgid "Could not read the clipboard in time"
 msgstr ""
 
-#: mpris.js:18
+#: src/core/mpris.js:18
 msgid "No active media player found"
 msgstr ""
 
-#: mpris.js:33
+#: src/core/mpris.js:33
 msgid "Playback toggled"
 msgstr ""
 
@@ -831,82 +831,82 @@ msgstr ""
 msgid "Search URL (%s is replaced by the query)"
 msgstr ""
 
-#: random.js:12
+#: src/core/random.js:12
 msgid "Could not obtain random data"
 msgstr ""
 
-#. Mode names and search hints (constants.js MODES); translated at their render
-#. sites in extension.js via _(), so xgettext cannot see them here.
-#: constants.js
+#. Mode names and search hints (src/shared/constants.js MODES); translated at their render
+#. sites in src/extension.js via _(), so xgettext cannot see them here.
+#: src/shared/constants.js
 msgid "Applications"
 msgstr ""
 
-#: constants.js
+#: src/shared/constants.js
 msgid "Search apps"
 msgstr ""
 
-#: constants.js
+#: src/shared/constants.js
 msgid "Files"
 msgstr ""
 
-#: constants.js
+#: src/shared/constants.js
 msgid "Search files"
 msgstr ""
 
-#: constants.js
+#: src/shared/constants.js
 msgid "Actions"
 msgstr ""
 
-#: constants.js
+#: src/shared/constants.js
 msgid "Search actions"
 msgstr ""
 
-#: constants.js
+#: src/shared/constants.js
 msgid "Clipboard"
 msgstr ""
 
-#: constants.js
+#: src/shared/constants.js
 msgid "Search clipboard"
 msgstr ""
 
-#. Application categories (appCatalog.js CATEGORIES); translated at their render
-#. sites in extension.js via _().
-#: appCatalog.js
+#. Application categories (src/search/appCatalog.js CATEGORIES); translated at their render
+#. sites in src/extension.js via _().
+#: src/search/appCatalog.js
 msgid "All"
 msgstr ""
 
-#: appCatalog.js
+#: src/search/appCatalog.js
 msgid "Office"
 msgstr ""
 
-#: appCatalog.js
+#: src/search/appCatalog.js
 msgid "Internet"
 msgstr ""
 
-#: appCatalog.js
+#: src/search/appCatalog.js
 msgid "Media"
 msgstr ""
 
-#: appCatalog.js
+#: src/search/appCatalog.js
 msgid "Graphics"
 msgstr ""
 
-#: appCatalog.js
+#: src/search/appCatalog.js
 msgid "Games"
 msgstr ""
 
-#: appCatalog.js
+#: src/search/appCatalog.js
 msgid "Development"
 msgstr ""
 
-#: appCatalog.js
+#: src/search/appCatalog.js
 msgid "Education"
 msgstr ""
 
-#: appCatalog.js
+#: src/search/appCatalog.js
 msgid "Utilities"
 msgstr ""
 
-#: appCatalog.js
+#: src/search/appCatalog.js
 msgid "Other"
 msgstr ""

@@ -1,5 +1,5 @@
 import Gio from 'gi://Gio';
-import {_} from './i18n.js';
+import {_} from '../shared/i18n.js';
 
 // Rejection-sampled randomness drawn from /dev/urandom so generated numbers and
 // passwords are unbiased and never fall back to Math.random.
