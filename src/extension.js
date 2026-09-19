@@ -139,10 +139,10 @@ export default class GlasslightExtension extends Extension {
     }
 
     // GNOME Shell 50 reaches its app grid through the Super+A keybinding, the dash
-    // Show Apps button (also driven by Ctrl+Alt+Tab), Overview.showApps() and
-    // _shiftState() for a second Super press. The button and shift handlers are
-    // looked up on the instance at call time, so own-property shadows redirect
-    // them and deleting the shadows restores the prototype methods.
+    // Show Apps button (also driven by Ctrl+Alt+Tab), Overview.showApps(),
+    // _shiftState() for a second Super press, and vertical swipe gestures. The button,
+    // gesture, and shift handlers are looked up on the instance at call time, so own-property
+    // shadows redirect them and deleting the shadows restores the prototype methods.
     _replaceAppGrid() {
         const controls = Main.overview._overview?.controls;
         if (this._appGridReplaced || !controls) return;
@@ -165,6 +165,24 @@ export default class GlasslightExtension extends Extension {
             if (direction === Meta.MotionDirection.UP && finalState >= ControlsState.WINDOW_PICKER) openApps();
             else proto._shiftState.call(this, direction);
         };
+        controls.gestureBegin = function (tracker) {
+            const baseDistance = global.screen_height;
+            const progress = this._stateAdjustment.value;
+            const points = [
+                ControlsState.HIDDEN,
+                ControlsState.WINDOW_PICKER,
+            ];
+            const transition = this._stateAdjustment.get_transition('value');
+            const cancelProgress = transition
+                ? transition.get_interval().peek_final_value()
+                : Math.round(progress);
+            this._stateAdjustment.remove_transition('value');
+            tracker.confirmSwipe(baseDistance, points, progress, cancelProgress);
+            this.prepareToEnterOverview();
+            this._stateAdjustment.gestureInProgress = true;
+        };
+        this._origAdjustmentUpper = controls._stateAdjustment.upper;
+        controls._stateAdjustment.upper = ControlsState.WINDOW_PICKER;
         Main.overview.showApps = openApps;
         Main.wm.removeKeybinding('toggle-application-view');
         Main.wm.addKeybinding('toggle-application-view', new Gio.Settings({schema_id: 'org.gnome.shell.keybindings'}),
@@ -179,6 +197,11 @@ export default class GlasslightExtension extends Extension {
         this._appGridReplaced = false;
         delete controls._onShowAppsButtonToggled;
         delete controls._shiftState;
+        delete controls.gestureBegin;
+        if (this._origAdjustmentUpper !== undefined) {
+            controls._stateAdjustment.upper = this._origAdjustmentUpper;
+            delete this._origAdjustmentUpper;
+        }
         delete Main.overview.showApps;
         // Re-register the stock binding exactly as OverviewControls does.
         Main.wm.removeKeybinding('toggle-application-view');

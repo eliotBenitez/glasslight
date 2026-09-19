@@ -38,7 +38,7 @@ if len(sys.argv) > 1:
                     for name in archive.namelist() if name.endswith('.js')}
         check_layout(packaged)
         assert packaged == sources, 'Archive JavaScript differs from source tree'
-        for required in ['metadata.json', 'stylesheet.css', 'icon.png',
+        for required in ['metadata.json', 'stylesheet.css', 'icon.png', 'LICENSE',
                          'schemas/gschemas.compiled',
                          'locale/ru/LC_MESSAGES/glasslight.mo']:
             assert archive.read(required) == (ROOT / required).read_bytes(), required

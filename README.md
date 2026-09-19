@@ -86,7 +86,8 @@ listed. Searching stays local and opens nothing until you select a result.
 
 Want to tweak the theme, blur, clipboard history, or shortcut? Preferences can
 also make `Super+A`, the Show Apps button, and a second `Super` press open
-Glasslight's app catalogue instead of the GNOME app grid.
+Glasslight's app catalogue instead of the GNOME app grid. With this option on,
+an upward Overview swipe stops at the window view instead of opening the app grid.
 
 ```sh
 gnome-extensions prefs glasslight
@@ -100,6 +101,11 @@ gnome-extensions prefs glasslight
   Ecosia, or your own URL template in preferences.
 - Passwords are generated from `/dev/urandom`.
 - Glasslight targets GNOME Shell **50** only, for now.
+
+## License
+
+Glasslight is free software: you can redistribute it and/or modify it under the
+terms of the [GNU General Public License v3.0](LICENSE).
 
 ## Contributing
 
